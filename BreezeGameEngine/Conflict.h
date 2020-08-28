@@ -147,7 +147,6 @@ public:
 	void SetDir(const Vec<float>& dir);
 	bool GetSwing() const;
 	void Update(float const dt) override;
-	void Input(Keyboard::Event e);
 	Rect<float> GetCollBox() const override;
 	Rect<float> GetAttackBox(int atindex) const;
 	Attack& GetAttack(int atindex) const;
@@ -156,9 +155,10 @@ public:
 	{
 		attack.Afflict(*this);
 	}
+	void MakeAttack(int type = 0);
+	void DVel(Vec<float> dv);
 
 private:
-	void MakeAttack(int type = 0);
 	void SetVel();
 
 	Surface sprite;

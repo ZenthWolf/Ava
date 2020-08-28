@@ -144,6 +144,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="DXErr.h" />
     <ClInclude Include="BreezeException.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="FrameTimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GraphicsOPT.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />

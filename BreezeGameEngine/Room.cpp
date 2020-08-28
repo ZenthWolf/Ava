@@ -2,7 +2,7 @@
 #include <algorithm>
 
 Room::Room(Character& Ava, int scenario, Keyboard& kbd)
-	:Ava(Ava), kbd(kbd)
+	:Ava(Ava), kbd(kbd), AvaController(Ava,kbd)
 {
 	if (scenario == 0)
 	{
@@ -23,16 +23,11 @@ Room::Room(Character& Ava, int scenario, Keyboard& kbd)
 }
 
 // The purpose here is to throw out irrelevant keys without feeding them to any entities.
-void Room::ReadInput() const
+void Room::ReadInput()
 {
-	while (!kbd.KeyIsEmpty())
+	if (AvaController.HasInput())
 	{
-		const Keyboard::Event e = kbd.ReadKey();
-		if (e.GetCode() == ' ' || e.GetCode() == 'Z' || e.GetCode() == 'X' || abs(e.GetCode() - 37) <= 3) // Arrow Keys are 37-40
-															  // This passes 34 -> 40... oops?
-		{
-			Ava.Input(e);
-		}
+		AvaController.ReadInput();
 	}
 }
 
