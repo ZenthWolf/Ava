@@ -10,7 +10,7 @@ Character::Character(const Vec<float>& pos, Keyboard& kbd)
 
 	for (int i = (int)Sequence::StandingLeft; i < (int)Sequence::Count; i++)
 	{
-		animation.emplace_back(90, 90 * (i-int(Sequence::StandingLeft)), 90, 90, 1, sprite, 0.16f);
+		animation.emplace_back(0, 90 * (i-int(Sequence::StandingLeft)), 90, 90, 1, sprite, 0.16f);
 	}
 }
 
