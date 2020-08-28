@@ -77,9 +77,9 @@ void Behavior::AttackTimer(const float dt)
 	if (atkTimer >= 0.0f)
 	{
 		self.StateChange(Enemy::Action::Aim);
-		std::uniform_real_distribution<float> timer(4.0f, 7.0f);
+		std::uniform_real_distribution<float> timer(1.0f, 3.0f);
 		atkTimer = -timer(rng);
-		aimTimer = -0.7f;
+		aimTimer = -0.3f;
 	}
 }
 
