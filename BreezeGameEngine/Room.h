@@ -4,6 +4,7 @@
 
 #include "Conflict.h"
 #include "Obstacle.h"
+#include "Behavior.h"
 
 #include "Keyboard.h"
 #include "Graphics.h"
@@ -25,9 +26,12 @@ private:
 	void HitDetection(); //Detect Collision of attacks
 	void Cull();
 
-	Character& Ava; //Does Ava properly belong to the "Room" she is in? Or do rooms just "know" about her?
-	std::vector<std::unique_ptr<Enemy>> enemy; // Should have a list of enemies- ALL ENEMIES ARE REQUIRED TO DO ANYTHING STATED HERE, SO BASIS FOR SUBCLASS!
-	std::vector<std::unique_ptr<Obstacle>> obstacle; // List of obstacles- which will eventually be a class like "ground" once was.
+	Character& Ava;
+	std::vector<std::unique_ptr<Enemy>> enemy;
+	std::vector<std::unique_ptr<Obstacle>> obstacle;
 
 	Keyboard& kbd;
+
+	//Developping
+	std::vector<std::unique_ptr<Behavior>> behavior;
 };

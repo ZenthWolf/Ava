@@ -62,6 +62,16 @@ Vec<float> Entity::GetPos() const
 	return pos;
 }
 
+Vec<float> Entity::GetVel() const
+{
+	return vel;
+}
+
+void Entity::Move(const Vec<float> dr)
+{
+	pos += dr;
+}
+
 void Entity::PushBox(Rect<float> wall)
 {
 	float Deviance[4] = { 0.0f }; //0-4 Left, Up, Right, Down

@@ -87,6 +87,9 @@ public:
 	//virtual void OnHit(Entity& attacker, int atindex) = 0;
 
 	Vec<float> GetPos() const;
+	Vec<float> GetVel() const;
+	void Move(const Vec<float> dr);
+
 	virtual void PushBox(Rect<float> wall);
 	Allegiance GetAllegiance() const;
 	virtual Rect<float> GetCollBox() const;
@@ -188,22 +191,23 @@ public:
 	//This trash has to be handled better some other way, right?
 	void fixpos(float dr);
 
-private:
 	enum class Action
 	{
 		Move,
-		Aim
+		Aim,
+		Stunned
 	};
 
-	Action state = Action::Move;
-	float aimTimer = 0.0f;
+	Action GetState() const;
 
 	void BounceX();
 	void BounceY();
-	void AttackTimer(float dt);
-	void StateTimer(float dt);
-
+	void StateChange(const Action newstate);
 	void BlobShot();
+
+private:
+	Action state = Action::Move;
+	float aimTimer = 0.0f;
 
 	Color col;
 	float size;

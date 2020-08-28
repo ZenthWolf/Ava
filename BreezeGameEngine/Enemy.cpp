@@ -20,37 +20,6 @@ void Enemy::fixpos(float dr)
 void Enemy::Update(const float dt)
 {
 	VulnerableTimer(dt);
-	AttackTimer(dt);
-	StateTimer(dt);
-
-	if (!stun && state == Action::Move)
-	{
-		pos += vel * dt;
-
-		if (pos.Y - size <= 0.0f)
-		{
-			pos.Y = size;
-			BounceY();
-		}
-
-		else if (pos.Y + size >= 600.0f)
-		{
-			pos.Y = 600.0f - size;
-			BounceY();
-		}
-
-		else if (pos.X - size <= 0.0f)
-		{
-			pos.X = size;
-			BounceX();
-		}
-
-		else if (pos.X + size >= 800.0f - size)
-		{
-			pos.Y = 800.0f;
-			BounceX();
-		}
-	}
 
 	for (int i = 0; i < attack.size(); i++)
 	{
@@ -88,19 +57,6 @@ void Enemy::Draw(Graphics& gfx)
 		attack[i]->Draw(gfx);
 	}
 }
-
-/*
-void Enemy::OnHit(Entity& attacker, int atindex)
-{
-	if (attacker.GetAllegiance() != Allegiance::Enemy && vulnerable)
-	{
-		health -= 1;
-		vulnerable = false;
-		invultime = -0.5f;
-		flash = true;
-	}
-}
-*/
 
 void Enemy::PushBox(Rect<float> wall)
 {
@@ -165,6 +121,16 @@ void Enemy::PushBox(Rect<float> wall)
 	}
 }
 
+Enemy::Action Enemy::GetState() const
+{
+	return state;
+}
+
+void Enemy::StateChange(const Action newstate)
+{
+	state = newstate;
+}
+
 void Enemy::BounceX()
 {
 	vel.X = -vel.X;
@@ -173,50 +139,6 @@ void Enemy::BounceX()
 void Enemy::BounceY()
 {
 	vel.Y = -vel.Y;
-}
-
-void Enemy::AttackTimer(float dt)
-{
-	atkTimer += dt;
-	if (atkTimer >= 0.0f)
-	{
-		//MakeAttack
-	}
-}
-
-void Enemy::StateTimer(float dt)
-{
-	//Should stun be a state in of itself? Probably...
-	if (!stun)
-	{
-		switch (state)
-		{
-		
-		case Action::Move:
-		{
-			atkTimer += dt;
-			if (atkTimer >= 0.0f)
-			{
-				state = Action::Aim;
-				std::uniform_real_distribution<float> timer(4.0f, 7.0f);
-				atkTimer = -timer(rng);
-				aimTimer = -0.7f;
-			}
-			break;
-		}
-
-		case Action::Aim:
-		{
-			aimTimer += dt;
-			if (aimTimer >= 0.0f)
-			{
-				BlobShot();
-				state = Action::Move;
-			}
-		}
-
-		}
-	}
 }
 
 void Enemy::BlobShot()
