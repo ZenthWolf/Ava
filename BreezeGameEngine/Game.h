@@ -56,7 +56,7 @@ private:
 	std::mt19937 rng;
 	GameState gameState = GameState::Play;
 
-	Character link = Character({ 100.0f, 100.0f }, wnd.kbd);
-	Room room = Room(link, 0, wnd.kbd);
+	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
+	Room room = Room(ava, 0, wnd.kbd);
 	Font font = "Images//Fixedsys16x28.bmp";
 };
