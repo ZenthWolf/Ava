@@ -16,71 +16,72 @@ void Input::ReadInput()
 	{
 		const Keyboard::Event e = kbd.ReadKey();
 
-		switch (e.GetCode())
+		if (e.IsPress())
 		{
-		case ' ':
-		{
-			Ava.MakeAttack();
-			break;
-		}
-		case 'Z':
-		{
-			Ava.MakeAttack(1);
-			break;
-		}
-		case 'X':
-		{
-			Ava.MakeAttack(2);
-			break;
-		}
-		case VK_LEFT:
-		{
-			if (e.IsPress())
+			switch (e.GetCode())
+			{
+			case ' ':
+			{
+				Ava.MakeAttack();
+				break;
+			}
+			case 'Z':
+			{
+				Ava.MakeAttack(1);
+				break;
+			}
+			case 'X':
+			{
+				Ava.MakeAttack(2);
+				break;
+			}
+			case VK_LEFT:
 			{
 				Ava.DVel({ -1.0f, 0.0f });
+				break;
 			}
-			else if (e.IsRelease())
-			{
-				Ava.DVel({ 1.0f, 0.0f });
-			}
-			break;
-		}
-		case VK_UP:
-		{
-			if (e.IsPress())
+			case VK_UP:
 			{
 				Ava.DVel({ 0.0f, -1.0f });
+				break;
 			}
-			else if (e.IsRelease())
-			{
-				Ava.DVel({ 0.0f, 1.0f });
-			}
-			break;
-		}
-		case VK_RIGHT:
-		{
-			if (e.IsPress())
+			case VK_RIGHT:
 			{
 				Ava.DVel({ 1.0f, 0.0f });
+				break;
 			}
-			else if (e.IsRelease())
+			case VK_DOWN:
+			{
+				Ava.DVel({ 0.0f, 1.0f });
+				break;
+			}
+			}
+		}
+		else if (e.IsRelease())
+		{
+			switch (e.GetCode())
+			{
+			case VK_LEFT:
+			{
+				Ava.DVel({ 1.0f, 0.0f });
+				break;
+			}
+			case VK_UP:
+			{
+				Ava.DVel({ 0.0f, 1.0f });
+				break;
+			}
+			case VK_RIGHT:
 			{
 				Ava.DVel({ -1.0f, 0.0f });
+				break;
 			}
-			break;
-		}
-		case VK_DOWN:
-		{
-			if (e.IsPress())
-			{
-				Ava.DVel({ 0.0f, 1.0f });
-			}
-			else if (e.IsRelease())
+			case VK_DOWN:
 			{
 				Ava.DVel({ 0.0f, -1.0f });
+				break;
 			}
-			break;
-		}
+			}
 		}
 	}
 }
