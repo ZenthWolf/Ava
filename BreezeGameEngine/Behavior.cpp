@@ -7,7 +7,7 @@ Behavior::Behavior(Enemy& self)
 
 void Behavior::Update(const float dt)
 {
-	self.Update(dt);  // Right now, for whatever I can't pull out!
+	self.Update(dt);
 
 	Enemy::Action state = self.GetState();
 
@@ -16,13 +16,19 @@ void Behavior::Update(const float dt)
 
 	case Enemy::Action::Move:
 	{
-		MoveUpdate(dt);
+		if (!self.IsStunned())
+		{
+			MoveUpdate(dt);
+		}
 		break;
 	}
 
 	case Enemy::Action::Aim:
 	{
-		AimUpdate(dt);
+		if (!self.IsStunned())
+		{
+			AimUpdate(dt);
+		}
 		break;
 	}
 

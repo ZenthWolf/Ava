@@ -95,6 +95,7 @@ public:
 	virtual Rect<float> GetCollBox() const;
 	int GetAttackNum() const;
 	bool IsVulnerable() const;
+	bool IsStunned() const;
 	virtual bool Cull();
 
 

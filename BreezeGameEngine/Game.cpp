@@ -23,11 +23,14 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	rng(std::random_device()())
 {
-
+	behavior.push_back(
+		std::make_unique<Behavior>(*room.enemy[0])
+	);
 }
 
 void Game::Play()
 {
+	Cull();
 	gfx.BeginFrame();
 
 	int iter = 0;
@@ -50,7 +53,24 @@ void Game::Play()
 
 void Game::UpdateModel(float dt)
 {
+	for (auto& bhv : behavior)
+	{
+		bhv->Update(dt);
+	}
+
 	room.Update(dt);
+}
+
+void Game::Cull()
+{
+	for (auto& bhv : behavior)
+	{
+		behavior.erase(std::remove_if(behavior.begin(), behavior.end(),
+			[](std::unique_ptr<Behavior>& i) {return i->Cull(); }
+		), behavior.end());
+	}
+	
+	room.Cull();
 }
 
 

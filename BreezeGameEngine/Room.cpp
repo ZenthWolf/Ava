@@ -19,10 +19,6 @@ Room::Room(Character& Ava, int scenario, Keyboard& kbd)
 		obstacle.push_back(
 			std::make_unique<Obstacle>(Vec<float>(320.0f, 50.0f), Vec<float>(360.0f, 90.0f))
 		);
-
-		behavior.push_back(
-			std::make_unique<Behavior>(*enemy[0])
-		);
 	}
 }
 
@@ -53,16 +49,11 @@ void Room::Update(float dt)
 	// Inform dynamic objects that it is time to update!
 	// Characters and Enemies should update their attacks at this time.
 	Ava.Update(dt);
-	for (int i = 0; i < enemy.size(); i++)
-	{
-		behavior[i]->Update(dt);
-	}
 
 	//Do the collisiony type stuff
 	CheckObstacles();
 	HitDetection();      //Active hits have preference over passive hits
 //	EnemyCollision();
-	Cull();
 }
 
 void Room::Draw(Graphics& gfx)
@@ -149,10 +140,6 @@ void Room::HitDetection()
 
 void Room::Cull()
 {
-	behavior.erase(std::remove_if(behavior.begin(), behavior.end(),
-		[](std::unique_ptr<Behavior>& i) {return i->Cull(); }
-	), behavior.end());
-
 	enemy.erase(std::remove_if(enemy.begin(), enemy.end(), 
 		[](std::unique_ptr<Enemy>& i) {return i->Cull(); }
 		), enemy.end());

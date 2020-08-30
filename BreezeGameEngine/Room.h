@@ -4,7 +4,6 @@
 
 #include "Conflict.h"
 #include "Obstacle.h"
-#include "Behavior.h"
 
 #include "Keyboard.h"
 #include "Graphics.h"
@@ -18,20 +17,18 @@ public:
 	Room(Character& Ava, int scenario, Keyboard& kbd);
 	void Update(float dt);
 	void Draw(Graphics& gfx);
+	void Cull();
+
+	std::vector<std::unique_ptr<Enemy>> enemy;
 
 private:
 	void ReadInput() const;
 	void CheckObstacles(); //Check entities are not colliding with obstacles
 	void EnemyCollision(); //Check if Ava is in contact with an enemy
 	void HitDetection(); //Detect Collision of attacks
-	void Cull();
 
 	Character& Ava;
-	std::vector<std::unique_ptr<Enemy>> enemy;
 	std::vector<std::unique_ptr<Obstacle>> obstacle;
 
 	Keyboard& kbd;
-
-	//Developping
-	std::vector<std::unique_ptr<Behavior>> behavior;
 };

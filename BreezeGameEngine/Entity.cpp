@@ -153,6 +153,11 @@ bool Entity::IsVulnerable() const
 	return vulnerable;
 }
 
+bool Entity::IsStunned() const
+{
+	return stun;
+}
+
 bool Entity::Cull()
 {
 	return cull;

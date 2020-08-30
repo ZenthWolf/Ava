@@ -23,6 +23,7 @@
 #include <random>
 
 #include "Conflict.h"
+#include "Behavior.h"
 #include "Room.h"
 
 
@@ -36,6 +37,7 @@ public:
 private:
 	void ComposeFrame(int iter);
 	void UpdateModel(float dt);
+	void Cull();
 
 	/********************************/
 	/*  User Functions              */
@@ -58,5 +60,6 @@ private:
 
 	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
 	Room room = Room(ava, 0, wnd.kbd);
+	std::vector<std::unique_ptr<Behavior>> behavior;
 	Font font = "Images//Fixedsys16x28.bmp";
 };
