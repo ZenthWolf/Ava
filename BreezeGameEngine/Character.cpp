@@ -156,17 +156,11 @@ void Character::DVel(Vec<float> dv)
 	vel += dv*speed;
 }
 
-bool Character::GetSwing() const
-{
-	return swingstate;
-}
-
 void Character::Update(float const dt)
 {
-	SetDir(vel);
-
 	if (curAct == Action::Move)
 	{
+		SetDir(vel);
 		pos += vel * dt;
 	}
 

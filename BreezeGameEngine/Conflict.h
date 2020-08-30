@@ -144,8 +144,6 @@ public:
 	Character(const Vec<float>& pos, Keyboard& kbd);
 	void Draw(Graphics& gfx) override;
 	void Draw(Graphics& gfx, Color sub) const;
-	void SetDir(const Vec<float>& dir);
-	bool GetSwing() const;
 	void Update(float const dt) override;
 	Rect<float> GetCollBox() const override;
 	Rect<float> GetAttackBox(int atindex) const;
@@ -159,7 +157,7 @@ public:
 	void DVel(Vec<float> dv);
 
 private:
-	void SetVel();
+	void SetDir(const Vec<float>& dir);
 
 	Surface sprite;
 	bool swingstate = false;
