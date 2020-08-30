@@ -22,7 +22,8 @@
 #include "Font.h"
 #include <random>
 
-#include "Conflict.h"
+//#include "Conflict.h"
+#include "Input.h"
 #include "Room.h"
 
 
@@ -57,6 +58,7 @@ private:
 	GameState gameState = GameState::Play;
 
 	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
+	Input avaController;
 	Room room = Room(ava, 0, wnd.kbd);
 	Font font = "Images//Fixedsys16x28.bmp";
 };

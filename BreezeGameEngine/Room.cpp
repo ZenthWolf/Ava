@@ -2,7 +2,7 @@
 #include <algorithm>
 
 Room::Room(Character& Ava, int scenario, Keyboard& kbd)
-	:Ava(Ava), kbd(kbd), AvaController(Ava,kbd)
+	:Ava(Ava), kbd(kbd)
 {
 	if (scenario == 0)
 	{
@@ -22,19 +22,8 @@ Room::Room(Character& Ava, int scenario, Keyboard& kbd)
 	}
 }
 
-// The purpose here is to throw out irrelevant keys without feeding them to any entities.
-void Room::ReadInput()
-{
-	if (AvaController.HasInput())
-	{
-		AvaController.ReadInput();
-	}
-}
-
 void Room::Update(float dt)
 {
-	ReadInput();
-
 	// Inform dynamic objects that it is time to update!
 	// Characters and Enemies should update their attacks at this time.
 	Ava.Update(dt);

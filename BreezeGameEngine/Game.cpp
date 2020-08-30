@@ -19,9 +19,8 @@
 
 Game::Game(MainWindow& wnd)
 	:
-	wnd(wnd),
-	gfx(wnd),
-	rng(std::random_device()())
+	wnd(wnd), gfx(wnd), rng(std::random_device()()),
+	avaController(ava, wnd.kbd)
 {
 
 }
@@ -50,6 +49,7 @@ void Game::Play()
 
 void Game::UpdateModel(float dt)
 {
+	avaController.ReadInput();
 	room.Update(dt);
 }
 
