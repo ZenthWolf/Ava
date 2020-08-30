@@ -51,6 +51,7 @@ void Game::Play()
 void Game::UpdateModel(float dt)
 {
 	room.Update(dt);
+	collider.StaticCollider(room);
 }
 
 

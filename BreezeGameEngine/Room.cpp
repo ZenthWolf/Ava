@@ -49,7 +49,6 @@ void Room::Update(float dt)
 	}
 
 	//Do the collisiony type stuff
-	CheckObstacles();
 	HitDetection();      //Active hits have preference over passive hits
 //	EnemyCollision();
 	Cull();
@@ -65,33 +64,6 @@ void Room::Draw(Graphics& gfx)
 	for (int i = 0; i < enemy.size(); i++)
 	{
 		enemy[i]->Draw(gfx);
-	}
-}
-
-void Room::CheckObstacles()
-{
-	for (int i = 0; i < obstacle.size(); i++)
-	{
-		//STATIC COLLISION
-
-		Rect<float> staticBox = obstacle[i]->GetCollBox();
-
-		//Check Ava/Obstacle Collision
-		if ( staticBox.CollWith( Ava.GetCollBox() ) )
-		{
-			Ava.PushBox( staticBox ); // A function which replaces Ava to end collision
-		}
-
-		//Check Enemy/Obstacle Collision
-		for (int j = 0; j < enemy.size(); j++)
-		{
-			Rect<float> enemyBox = enemy[j]->GetCollBox();
-
-			if ( staticBox.CollWith(enemyBox) )
-			{
-				enemy[j]->PushBox( staticBox ); // A function which replaces Enemy to end collision- may also alter behavior
-			}
-		}
 	}
 }
 

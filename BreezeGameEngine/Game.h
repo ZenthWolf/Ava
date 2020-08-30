@@ -23,7 +23,8 @@
 #include <random>
 
 #include "Conflict.h"
-#include "Room.h"
+//#include "Room.h"
+#include "Collider.h"
 
 
 class Game
@@ -58,5 +59,6 @@ private:
 
 	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
 	Room room = Room(ava, 0, wnd.kbd);
+	Collider collider = Collider();
 	Font font = "Images//Fixedsys16x28.bmp";
 };
