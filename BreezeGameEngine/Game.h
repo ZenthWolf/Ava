@@ -24,7 +24,7 @@
 
 #include "Conflict.h"
 #include "Behavior.h"
-#include "Room.h"
+#include "Collider.h"
 
 
 class Game
@@ -59,7 +59,9 @@ private:
 	GameState gameState = GameState::Play;
 
 	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
-	Room room = Room(ava, 0, wnd.kbd);
 	std::vector<std::unique_ptr<Behavior>> behavior;
+
+	Room room = Room(ava, 0, wnd.kbd);
+	Collider collider = Collider();
 	Font font = "Images//Fixedsys16x28.bmp";
 };
