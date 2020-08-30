@@ -148,10 +148,7 @@ public:
 	Character(const Vec<float>& pos, Keyboard& kbd);
 	void Draw(Graphics& gfx) override;
 	void Draw(Graphics& gfx, Color sub) const;
-	void SetDir(const Vec<float>& dir);
-	bool GetSwing() const;
 	void Update(float const dt) override;
-	void Input(Keyboard::Event e);
 	Rect<float> GetCollBox() const override;
 	Rect<float> GetAttackBox(int atindex) const;
 	Attack& GetAttack(int atindex) const;
@@ -160,10 +157,11 @@ public:
 	{
 		attack.Afflict(*this);
 	}
+	void MakeAttack(int type = 0);
+	void DVel(Vec<float> dv);
 
 private:
-	void MakeAttack(int type = 0);
-	void SetVel();
+	void SetDir(const Vec<float>& dir);
 
 	Surface sprite;
 	bool swingstate = false;

@@ -19,9 +19,8 @@
 
 Game::Game(MainWindow& wnd)
 	:
-	wnd(wnd),
-	gfx(wnd),
-	rng(std::random_device()())
+	wnd(wnd), gfx(wnd), rng(std::random_device()()),
+	avaController(ava, wnd.kbd)
 {
 	behavior.push_back(
 		std::make_unique<Behavior>(*room.enemy[0])
@@ -53,6 +52,7 @@ void Game::Play()
 
 void Game::UpdateModel(float dt)
 {
+	avaController.ReadInput();
 	for (auto& bhv : behavior)
 	{
 		bhv->Update(dt);

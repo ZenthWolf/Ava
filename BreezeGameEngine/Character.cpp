@@ -10,7 +10,7 @@ Character::Character(const Vec<float>& pos, Keyboard& kbd)
 
 	for (int i = (int)Sequence::StandingLeft; i < (int)Sequence::Count; i++)
 	{
-		animation.emplace_back(90, 90 * (i-int(Sequence::StandingLeft)), 90, 90, 1, sprite, 0.16f);
+		animation.emplace_back(0, 90 * (i-int(Sequence::StandingLeft)), 90, 90, 1, sprite, 0.16f);
 	}
 }
 
@@ -67,24 +67,23 @@ void Character::SetDir(const Vec<float>& dir)
 		}
 		else
 		{
-			if (vel.X > 0.0f)
+			if (curSeq == Sequence::WalkingRight)
 			{
 				curSeq = Sequence::StandingRight;
 			}
-			else if (vel.X < 0.0f)
+			else if (curSeq == Sequence::WalkingLeft)
 			{
 				curSeq = Sequence::StandingLeft;
 			}
-			else if (vel.Y > 0.0f)
+			else if (curSeq == Sequence::WalkingDown)
 			{
 				curSeq = Sequence::StandingDown;
 			}
-			else if (vel.Y < 0.0f)
+			else if (curSeq == Sequence::WalkingUp)
 			{
 				curSeq = Sequence::StandingUp;
 			}
 		}
-		vel = dir * speed;
 	}
 }
 
@@ -152,41 +151,16 @@ void Character::MakeAttack(int type)
 	}
 }
 
-void Character::SetVel()
+void Character::DVel(Vec<float> dv)
 {
-	Vec<float> dir = { 0.0f, 0.0f };
-	if (kbd.KeyIsPressed(VK_UP))
-	{
-		dir.Y -= 1.0f;
-	}
-	if (kbd.KeyIsPressed(VK_DOWN))
-	{
-		dir.Y += 1.0f;
-	}
-	if (kbd.KeyIsPressed(VK_LEFT))
-	{
-		dir.X -= 1.0f;
-	}
-	if (kbd.KeyIsPressed(VK_RIGHT))
-	{
-		dir.X += 1.0f;
-	}
-
-
-	SetDir(dir);
-}
-
-bool Character::GetSwing() const
-{
-	return swingstate;
+	vel += dv*speed;
 }
 
 void Character::Update(float const dt)
 {
-	SetVel();
-
 	if (curAct == Action::Move)
 	{
+		SetDir(vel);
 		pos += vel * dt;
 	}
 
@@ -207,31 +181,6 @@ void Character::Update(float const dt)
 	}
 
 	animation[(int)curSeq].Update(dt);
-}
-
-void Character::Input(Keyboard::Event e)
-{
-	if (e.IsPress())
-	{
-		int key = e.GetCode();
-		switch (key)
-		{
-		case ' ':
-		{
-			MakeAttack();
-			break;
-		}
-		case 'Z':
-		{
-			MakeAttack(1);
-		}
-		case 'X':
-		{
-			MakeAttack(2);
-		}
-		}
-	}
-
 }
 
 

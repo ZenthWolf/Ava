@@ -24,7 +24,6 @@ public:
 	std::vector<std::unique_ptr<Obstacle>> obstacle;
 
 private:
-	void ReadInput() const;
 	void EnemyCollision(); //Check if Ava is in contact with an enemy
 	void HitDetection(); //Detect Collision of attacks
 
