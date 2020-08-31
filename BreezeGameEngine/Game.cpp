@@ -46,6 +46,7 @@ void Game::Play()
 		if (room.enemy.size() == 0)
 		{
 			wave++;
+			ava.Heal(wave % 2);
 			Vec<float> avapos = ava.GetPos();
 			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
 			ava.ChangeAct(Entity::Action::Move);
@@ -108,5 +109,7 @@ void Game::ComposeFrame(int iter)
 
 	std::string text = "It's alone to be dangerous. . . \nTake-a a-dis!\nNumber Iterations: ";
 	text += std::to_string(iter);
+	text += "\n\n Ava Health: ";
+	text += std::to_string(ava.GetHealth());
 	font.DrawText(text, { 100, 175 }, Color(255, 255, 255), gfx);
 }

@@ -42,7 +42,8 @@ public:
 
 	virtual void Update(float const dt) = 0;
 	virtual void Draw(Graphics& gfx) = 0;
-	void TakeDamage(float hp);
+	void TakeDamage(int hp);
+	void Heal(int hp);
 	void Stun(float duration = 2.0f);
 
 	Vec<float> GetPos() const;
@@ -124,12 +125,13 @@ public:
 		Count
 	};
 
-	Character(const Vec<float>& pos, Keyboard& kbd);
+	Character(const Vec<float>& pos, int health, Keyboard& kbd);
 	void Draw(Graphics& gfx) override;
 	void Draw(Graphics& gfx, Color sub) const;
 	void Update(float const dt) override;
 	Rect<float> GetCollBox() const override;
 	Sequence GetFacing() const;
+	int GetHealth() const;
 
 	void OnHit(class Attack& attack) override
 	{
@@ -354,6 +356,7 @@ public:
 		if (targ.IsVulnerable())
 		{
 			targ.TakeDamage(1);
+			cull = true;
 		}
 	}
 
@@ -396,7 +399,7 @@ public:
 	{
 		if (targ.IsVulnerable())
 		{
-			targ.TakeDamage(2);
+			targ.TakeDamage(1);
 			cull = true;
 		}
 	}

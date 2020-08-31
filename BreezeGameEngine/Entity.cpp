@@ -56,8 +56,7 @@ void Entity::StatusUpdate(float dt)
 	}
 }
 
-
-void Entity::TakeDamage(float hp)
+void Entity::TakeDamage(int hp)
 {
 	assert(hp >= 0);
 	health -= hp;
@@ -68,6 +67,11 @@ void Entity::TakeDamage(float hp)
 	{
 		cull = true;
 	}
+}
+
+void Entity::Heal(int hp)
+{
+	health += hp;
 }
 
 void Entity::Stun(float duration)

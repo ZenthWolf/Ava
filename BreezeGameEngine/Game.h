@@ -62,7 +62,7 @@ private:
 	std::mt19937 rng;
 	GameState gameState = GameState::NewWave;
 
-	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
+	Character ava = Character({ 100.0f, 100.0f }, 3, wnd.kbd);
 	Input avaController;
 	std::vector<std::unique_ptr<Behavior>> behavior;
 	Room room = Room(ava, wnd.kbd);

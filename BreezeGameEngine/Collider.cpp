@@ -35,7 +35,7 @@ void Collider::AttackCollider(Room& room) const
 
 		if (atk->GetAllegiance() == Entity::Allegiance::Enemy)
 		{
-			if (atkBox.CollWith(room.Ava.GetCollBox()));
+			if ( atkBox.CollWith( room.Ava.GetCollBox() ) )
 			{
 				room.Ava.OnHit(*atk);
 			}

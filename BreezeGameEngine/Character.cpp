@@ -1,7 +1,7 @@
 #include "Conflict.h"
 
-Character::Character(const Vec<float>& pos, Keyboard& kbd)
-	:Entity(pos, Allegiance::Ava), sprite("Images//link90x90.bmp"), kbd(kbd)
+Character::Character(const Vec<float>& pos, int hp, Keyboard& kbd)
+	:Entity(pos, {0,0}, hp, Allegiance::Ava), sprite("Images//link90x90.bmp"), kbd(kbd)
 {
 	for (int i = 0; i < (int)Sequence::StandingLeft; i++)
 	{
@@ -18,7 +18,23 @@ void Character::Draw(Graphics& gfx)
 {
 	if (!kbd.KeyIsPressed(VK_CONTROL))
 	{
-		animation[(int)curSeq].Draw(Vec<int>(pos), gfx);
+		if (vulnerable)
+		{
+			animation[(int)curSeq].Draw(Vec<int>(pos), gfx);
+		}
+		else
+		{
+			if (!flash)
+			{
+				animation[(int)curSeq].Draw(Vec<int>(pos), gfx);
+
+				flash = !flash;
+			}
+			else
+			{
+				flash = !flash;
+			}
+		}
 	}
 	else
 	{
@@ -125,6 +141,8 @@ void Character::AtkCooldown(float dt)
 
 void Character::Update(float const dt)
 {
+	VulnerableTimer(dt);
+
 	switch (curAct)
 	{
 	
@@ -161,4 +179,9 @@ Rect<float> Character::GetCollBox() const
 Character::Sequence Character::GetFacing() const
 {
 	return curSeq;
+}
+
+int Character::GetHealth() const
+{
+	return health;
 }
