@@ -19,30 +19,16 @@ void Character::Draw(Graphics& gfx)
 	if (!kbd.KeyIsPressed(VK_CONTROL))
 	{
 		animation[(int)curSeq].Draw(Vec<int>(pos), gfx);
-
-		for (int i = 0; i < attack.size(); i++)
-		{
-			attack[i]->Draw(gfx);
-		}
 	}
 	else
 	{
 		gfx.DrawRect(GetCollBox(), Colors::White);
-		for (int i = 0; i < attack.size(); i++)
-		{
-			attack[i]->Draw(gfx);
-		}
 	}
 }
 
 void Character::Draw(Graphics& gfx, Color sub) const
 {
 	animation[(int)curSeq].Draw(Vec<int>(pos), gfx, sub);
-
-	for (int i = 0; i < attack.size(); i++)
-	{
-		attack[i]->Draw(gfx);
-	}
 }
 
 void Character::SetDir(const Vec<float>& dir)
@@ -91,9 +77,6 @@ Vec<float> Character::MakeAttack()
 {
 	if (curAct != Action::Attack)
 	{
-		swingstate = true;
-		curAct = Action::Attack;
-
 		Rect<float> edge = GetCollBox();
 		Vec<float> pos0 = { 0.0f, 0.0f };
 
@@ -127,8 +110,6 @@ Vec<float> Character::MakeAttack()
 		}
 
 		return pos0;
-
-		swingcool = 0.0f;
 	}
 }
 
@@ -137,27 +118,32 @@ void Character::DVel(Vec<float> dv)
 	vel += dv*speed;
 }
 
+void Character::AtkCooldown(float dt)
+{
+	atkCool = -dt;
+}
+
 void Character::Update(float const dt)
 {
-	if (curAct == Action::Move)
+	switch (curAct)
+	{
+	
+	case Action::Move:
 	{
 		SetDir(vel);
 		pos += vel * dt;
+		break;
 	}
 
-	for (int i = 0; i < attack.size(); i++)
+	case Action::Attack:
 	{
-		attack[i]->Update(dt);
-	}
-
-	if (swingstate)
-	{
-		swingcool += dt;
-		if (swingcool >= 0.25f)
+		atkCool += dt;
+		if (atkCool >= 0.0f)
 		{
-			swingstate = false;
-			curAct = Action::Move;
+			ChangeAct(Action::Move);
 		}
+	}
+
 	}
 
 	animation[(int)curSeq].Update(dt);
@@ -172,29 +158,7 @@ Rect<float> Character::GetCollBox() const
 	return Rect<float>( v0, v1 );
 }
 
-Character::Action Character::GetAction() const
-{
-	return curAct;
-}
-
 Character::Sequence Character::GetFacing() const
 {
 	return curSeq;
-}
-
-Rect<float> Character::GetAttackBox(int atindex) const
-{
-	if (atindex < attack.size())
-	{
-		return attack[atindex]->GetCollBox();
-	}
-	else
-	{
-		return Rect<float>(0.0f, 0.0f, 0.0f, 0.0f);
-	}
-}
-
-Attack& Character::GetAttack(int atindex) const
-{
-	return *attack[atindex];
 }

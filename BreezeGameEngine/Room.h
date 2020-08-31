@@ -26,7 +26,6 @@ public:
 
 private:
 	void EnemyCollision(); //Check if Ava is in contact with an enemy
-	void HitDetection(); //Detect Collision of attacks
 
 	Keyboard& kbd;
 };

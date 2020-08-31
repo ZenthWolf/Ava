@@ -11,12 +11,12 @@ void Behavior::Update(const float dt)
 {
 	self.Update(dt);
 
-	Enemy::Action state = self.GetState();
+	Entity::Action curAct = self.GetAction();
 
-	switch (state)
+	switch (curAct)
 	{
 
-	case Enemy::Action::Move:
+	case Entity::Action::Move:
 	{
 		if (!self.IsStunned())
 		{
@@ -25,7 +25,7 @@ void Behavior::Update(const float dt)
 		break;
 	}
 
-	case Enemy::Action::Aim:
+	case Entity::Action::Attack:
 	{
 		if (!self.IsStunned())
 		{
@@ -34,7 +34,7 @@ void Behavior::Update(const float dt)
 		break;
 	}
 
-	case Enemy::Action::Stunned:
+	case Entity::Action::Stunned:
 	{
 		break;
 	}
@@ -88,7 +88,7 @@ void Behavior::AttackTimer(const float dt)
 	atkTimer += dt;
 	if (atkTimer >= 0.0f)
 	{
-		self.StateChange(Enemy::Action::Aim);
+		self.ChangeAct(Entity::Action::Attack);
 		std::uniform_real_distribution<float> timer(1.0f, 3.0f);
 		atkTimer = -timer(rng);
 		aimTimer = -0.3f;
@@ -103,7 +103,7 @@ void Behavior::AimUpdate(const float dt)
 		attack.push_back(
 			std::make_unique<BlobShot>(self.BlobShot())
 		);
-		self.StateChange(Enemy::Action::Move);
+		self.ChangeAct(Entity::Action::Move);
 	}
 }
 

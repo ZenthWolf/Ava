@@ -26,9 +26,13 @@ void Input::ReadInput()
 				if (Ava.GetAction() != Character::Action::Attack)
 				{
 					attack.push_back(
-						std::make_unique<SwordStrike>(Ava.MakeAttack(), Ava.GetFacing())
+						std::make_unique<SwordStrike>(Ava.MakeAttack(), Ava)
 					);
 				}
+				
+				Ava.ChangeAct(Entity::Action::Attack);
+				Ava.AtkCooldown();
+
 				break;
 			}
 			
@@ -37,9 +41,13 @@ void Input::ReadInput()
 				if (Ava.GetAction() != Character::Action::Attack)
 				{
 					attack.push_back(
-						std::make_unique<SwordStun>(Ava.MakeAttack(), Ava.GetFacing())
+						std::make_unique<SwordStun>(Ava.MakeAttack(), Ava)
 					);
 				}
+
+				Ava.ChangeAct(Entity::Action::Attack);
+				Ava.AtkCooldown();
+
 				break;
 			}
 			case 'X':
@@ -47,9 +55,13 @@ void Input::ReadInput()
 				if (Ava.GetAction() != Character::Action::Attack)
 				{
 					attack.push_back(
-						std::make_unique<ArrowShot>(Ava.MakeAttack(), Ava.GetFacing())
+						std::make_unique<ArrowShot>(Ava.MakeAttack(), Ava)
 					);
 				}
+
+				Ava.ChangeAct(Entity::Action::Attack);
+				Ava.AtkCooldown(0.16f);
+
 				break;
 			}
 			

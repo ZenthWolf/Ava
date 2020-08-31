@@ -27,52 +27,27 @@ public:
 	virtual void Afflict(Character& targ) = 0;
 	virtual void Afflict(Enemy& targ) = 0;
 
-	Attack(const Vec<float> pos, const Color col = Colors::Red);
-	Attack()
-	{
-		pos = { 0,0 };
-		hitBoxSize = { 0,0 };
-	}
+	Attack(const Vec<float> pos, Entity& source, const Color col = Colors::Red);
 
 	virtual void Update(float dt);
 	void Draw(Graphics& gfx) const;
 	Rect<float> GetCollBox() const;
+	virtual bool Cull();
 
 protected:
 	Vec<float> pos;
 	float vel = 0.0f;
 	Vec<float> hitBoxSize;
+	bool cull = false;
 	Color col = Colors::Red;
+
+	Entity& src;
 };
 
 class Entity
 {
 public:
-	//VAccept Visitors and Break EncapsulationV
 	virtual void OnHit(class Attack& attack) = 0;
-
-	void TakeDamage(float hp)
-	{
-		assert(hp >= 0);
-		health -= hp;
-		vulnerable = false;
-		invultime = -0.5f;
-		flash = true;
-		if (health <= 0)
-		{
-			cull = true;
-		}
-	}
-
-	void Stun(float duration = 2.0f)
-	{
-		if (!stun)
-		{
-			stun = true;
-			stuntime = -duration;
-		}
-	}
-	//^Accept Visitors and Break Encapsulation^
 
 	enum class Allegiance
 	{
@@ -80,9 +55,18 @@ public:
 		Enemy,
 		None
 	};
+	enum class Action
+	{
+		Stunned,
+		Move,
+		Attack,
+		Jump
+	};
+
 	virtual void Update(float const dt) = 0;
 	virtual void Draw(Graphics& gfx) = 0;
-	//virtual void OnHit(Entity& attacker, int atindex) = 0;
+	void TakeDamage(float hp);
+	void Stun(float duration = 2.0f);
 
 	Vec<float> GetPos() const;
 	Vec<float> GetVel() const;
@@ -90,8 +74,10 @@ public:
 
 	virtual void PushBox(Rect<float> wall);
 	Allegiance GetAllegiance() const;
+	Action GetAction() const;
+	void ChangeAct(const Action newAct);
+
 	virtual Rect<float> GetCollBox() const;
-	int GetAttackNum() const;
 	bool IsVulnerable() const;
 	bool IsStunned() const;
 	virtual bool Cull();
@@ -107,6 +93,7 @@ protected:
 	void StatusUpdate(float dt);
 
 	Allegiance allegiance = Allegiance::None;
+	Action curAct = Action::Move;
 	int health;
 	bool vulnerable = true;
 	float invultime = 0.0f;
@@ -117,7 +104,6 @@ protected:
 	Vec<float> pos;
 	Vec<float> vel = { 0.0f, 0.0f };
 	Vec<float> collBoxSize = { 0.0f, 0.0f };
-	std::vector<std::unique_ptr<class Attack>> attack;
 };
 
 class Character : public Entity
@@ -136,22 +122,12 @@ public:
 		Count
 	};
 
-	enum class Action
-	{
-		Move,
-		Attack,
-		Jump
-	};
-
 	Character(const Vec<float>& pos, Keyboard& kbd);
 	void Draw(Graphics& gfx) override;
 	void Draw(Graphics& gfx, Color sub) const;
 	void Update(float const dt) override;
 	Rect<float> GetCollBox() const override;
-	Action GetAction() const;
 	Sequence GetFacing() const;
-	Rect<float> GetAttackBox(int atindex) const;
-	Attack& GetAttack(int atindex) const;
 
 	void OnHit(class Attack& attack) override
 	{
@@ -159,16 +135,15 @@ public:
 	}
 	Vec<float> MakeAttack();
 	void DVel(Vec<float> dv);
+	void AtkCooldown(float dt = 0.250f);
 
 private:
 	void SetDir(const Vec<float>& dir);
 
 	Surface sprite;
-	bool swingstate = false;
-	float swingcool = 0.0f;
+	float atkCool = 0.0f;
 	std::vector<Animation> animation;
 	Sequence curSeq = Sequence::StandingDown;
-	Action curAct = Action::Move;
 	float speed = 120.0f;
 
 	Keyboard& kbd;
@@ -190,22 +165,11 @@ public:
 	//This trash has to be handled better some other way, right?
 	void fixpos(float dr);
 
-	enum class Action
-	{
-		Move,
-		Aim,
-		Stunned
-	};
-
-	Action GetState() const;
-
 	void BounceX();
 	void BounceY();
-	void StateChange(const Action newstate);
 	BlobShot BlobShot();
 
 private:
-	Action state = Action::Move;
 	float aimTimer = 0.0f;
 
 	Color col;
@@ -218,10 +182,10 @@ private:
 class SwordStrike : public Attack
 {
 public:
-	SwordStrike(const Vec<float> pos0, const Character::Sequence dir0)
-		:Attack(pos0)
+	SwordStrike(const Vec<float> pos0, Character& src)
+		:Attack(pos0, src)
 	{
-		switch (dir0)
+		switch (src.GetFacing())
 		{
 		case Character::Sequence::StandingLeft:
 		{
@@ -263,17 +227,25 @@ public:
 			targ.TakeDamage(2);
 		}
 	}
+
+	void Update(float dt) override
+	{
+		if (!(src.GetAction() == Entity::Action::Attack))
+		{
+			cull = true;
+		}
+	}
 };
 
 class SwordStun : public Attack
 {
 public:
-	SwordStun(const Vec<float> pos0, const Character::Sequence dir0)
-		:Attack(pos0)
+	SwordStun(const Vec<float> pos0, Character& src)
+		:Attack(pos0, src)
 	{
 		col = Colors::Green;
 
-		switch (dir0)
+		switch (src.GetFacing())
 		{
 		case Character::Sequence::StandingLeft:
 		{
@@ -317,17 +289,25 @@ public:
 			targ.Stun();
 		}
 	}
+
+	void Update(float dt) override
+	{
+		if (!(src.GetAction() == Entity::Action::Attack))
+		{
+			cull = true;
+		}
+	}
 };
 
 class ArrowShot : public Attack
 {
 public:
-	ArrowShot(const Vec<float> pos0, const Character::Sequence dir0)
-		:Attack(pos0)
+	ArrowShot(const Vec<float> pos0, Character& src)
+		:Attack(pos0, src)
 	{
 		col = Color(200u, 70u, 0u);
 
-		switch (dir0)
+		switch (src.GetFacing())
 		{
 		case Character::Sequence::StandingLeft:
 		{
@@ -379,6 +359,18 @@ public:
 	{
 		pos += dir * vel * dt;
 	}
+
+	bool Cull() override
+	{
+		Rect<float> box = GetCollBox();
+		if (box.X0 > 800.0f || box.X1 < 0.0f || box.Y0 > 600.0f || box.Y1 < 0.0f)
+		{
+			cull = true;
+		}
+
+		return cull;
+	}
+
 private:
 	Vec<float> dir;
 };
@@ -386,8 +378,8 @@ private:
 class BlobShot : public Attack
 {
 public:
-	BlobShot(const Vec<float> pos)
-		:Attack(pos)
+	BlobShot(const Vec<float> pos, Entity& src)
+		:Attack(pos, src)
 	{
 		col = Color(50u, 140u, 255u);
 		hitBoxSize = { 7.0f, 7.0f };
@@ -403,6 +395,7 @@ public:
 		if (targ.IsVulnerable())
 		{
 			targ.TakeDamage(2);
+			cull = true;
 		}
 	}
 
@@ -415,6 +408,18 @@ public:
 	{
 		pos += dir * vel * dt;
 	}
+	
+	bool Cull() override
+	{
+		Rect<float> box = GetCollBox();
+		if (box.X0 > 800.0f || box.X1 < 0.0f || box.Y0 > 600.0f || box.Y1 < 0.0f)
+		{
+			cull = true;
+		}
+
+		return cull;
+	}
+
 private:
 	float vel = 70.0f;
 	Vec<float> dir;

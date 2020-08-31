@@ -20,11 +20,6 @@ void Enemy::fixpos(float dr)
 void Enemy::Update(const float dt)
 {
 	VulnerableTimer(dt);
-
-	for (int i = 0; i < attack.size(); i++)
-	{
-		attack[i]->Update(dt);
-	}
 }
 
 void Enemy::Draw(Graphics& gfx)
@@ -50,11 +45,6 @@ void Enemy::Draw(Graphics& gfx)
 	{
 		gfx.PutPixel(pos.X + i + size, pos.Y + size - i + 1, Colors::Black);
 		gfx.PutPixel(pos.X - i + size, pos.Y + size - i + 1, Colors::Black);
-	}
-
-	for (int i = 0; i < attack.size(); i++)
-	{
-		attack[i]->Draw(gfx);
 	}
 }
 
@@ -125,16 +115,6 @@ void Enemy::PushBox(Rect<float> wall)
 	}
 }
 
-Enemy::Action Enemy::GetState() const
-{
-	return state;
-}
-
-void Enemy::StateChange(const Action newstate)
-{
-	state = newstate;
-}
-
 void Enemy::BounceX()
 {
 	vel.X = -vel.X;
@@ -147,5 +127,5 @@ void Enemy::BounceY()
 
 BlobShot Enemy::BlobShot()
 {
-	return class BlobShot(pos);
+	return class BlobShot(pos, *this);
 }

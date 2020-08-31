@@ -12,9 +12,6 @@ void Room::Update(float dt)
 	// Characters and Enemies should update their attacks at this time.
 	Ava.Update(dt);
 
-	//Do the collisiony type stuff
-	HitDetection();      //Active hits have preference over passive hits
-//	EnemyCollision();
 }
 
 void Room::Draw(Graphics& gfx)
@@ -62,23 +59,13 @@ void Room::EnemyCollision()
 }
 */
 
-void Room::HitDetection()
-{
-	for (int i = 0; i < Ava.GetAttackNum(); i++)
-	{
-		for (int j = 0; j < enemy.size(); j++)
-		{
-			if (Ava.GetAttackBox(i).CollWith(enemy[j]->GetCollBox()))
-			{
-				enemy[j]->OnHit(Ava.GetAttack(i));
-			}
-		}
-	}
-}
-
 void Room::Cull()
 {
 	enemy.erase(std::remove_if(enemy.begin(), enemy.end(), 
 		[](std::unique_ptr<Enemy>& i) {return i->Cull(); }
 		), enemy.end());
+
+	attack.erase(std::remove_if(attack.begin(), attack.end(),
+		[](std::unique_ptr<Attack>& i) {return i->Cull(); }
+	), attack.end());
 }

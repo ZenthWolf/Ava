@@ -57,6 +57,28 @@ void Entity::StatusUpdate(float dt)
 }
 
 
+void Entity::TakeDamage(float hp)
+{
+	assert(hp >= 0);
+	health -= hp;
+	vulnerable = false;
+	invultime = -0.5f;
+	flash = true;
+	if (health <= 0)
+	{
+		cull = true;
+	}
+}
+
+void Entity::Stun(float duration)
+{
+	if (!stun)
+	{
+		stun = true;
+		stuntime = -duration;
+	}
+}
+
 Vec<float> Entity::GetPos() const
 {
 	return pos;
@@ -137,15 +159,20 @@ Entity::Allegiance Entity::GetAllegiance() const
 	return allegiance;
 }
 
+Entity::Action Entity::GetAction() const
+{
+	return curAct;
+}
+
+void Entity::ChangeAct(const Action newAct)
+{
+	curAct = newAct;
+}
+
 
 Rect<float> Entity::GetCollBox() const
 {
 	return Rect<float>(pos, pos+collBoxSize);
-}
-
-int Entity::GetAttackNum() const
-{
-	return attack.size();
 }
 
 bool Entity::IsVulnerable() const
