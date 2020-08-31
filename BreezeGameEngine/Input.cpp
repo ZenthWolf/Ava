@@ -1,7 +1,8 @@
 #include "Input.h"
 
-Input::Input(Character& ava, Keyboard& kbd)
-	:Ava(ava), kbd(kbd)
+Input::Input(Character& ava, std::vector<std::unique_ptr<class Attack>>& atk, 
+			 Keyboard& kbd)
+	:Ava(ava), attack(atk), kbd(kbd)
 {
 }
 
@@ -22,19 +23,36 @@ void Input::ReadInput()
 			{
 			case ' ':
 			{
-				Ava.MakeAttack();
+				if (Ava.GetAction() != Character::Action::Attack)
+				{
+					attack.push_back(
+						std::make_unique<SwordStrike>(Ava.MakeAttack(), Ava.GetFacing())
+					);
+				}
 				break;
 			}
+			
 			case 'Z':
 			{
-				Ava.MakeAttack(1);
+				if (Ava.GetAction() != Character::Action::Attack)
+				{
+					attack.push_back(
+						std::make_unique<SwordStun>(Ava.MakeAttack(), Ava.GetFacing())
+					);
+				}
 				break;
 			}
 			case 'X':
 			{
-				Ava.MakeAttack(2);
+				if (Ava.GetAction() != Character::Action::Attack)
+				{
+					attack.push_back(
+						std::make_unique<ArrowShot>(Ava.MakeAttack(), Ava.GetFacing())
+					);
+				}
 				break;
 			}
+			
 			case VK_LEFT:
 			{
 				Ava.DVel({ -1.0f, 0.0f });

@@ -20,7 +20,7 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd), gfx(wnd), rng(std::random_device()()),
-	avaController(ava, wnd.kbd), spawner(room.enemy, behavior, room.obstacle, room.attack)
+	avaController(ava, room.attack, wnd.kbd), spawner(room.enemy, behavior, room.obstacle, room.attack)
 {
 	
 }

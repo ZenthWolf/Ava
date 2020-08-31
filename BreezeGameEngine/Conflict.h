@@ -135,19 +135,21 @@ public:
 		StandingDown,
 		Count
 	};
-private:
+
 	enum class Action
 	{
 		Move,
 		Attack,
 		Jump
 	};
-public:
+
 	Character(const Vec<float>& pos, Keyboard& kbd);
 	void Draw(Graphics& gfx) override;
 	void Draw(Graphics& gfx, Color sub) const;
 	void Update(float const dt) override;
 	Rect<float> GetCollBox() const override;
+	Action GetAction() const;
+	Sequence GetFacing() const;
 	Rect<float> GetAttackBox(int atindex) const;
 	Attack& GetAttack(int atindex) const;
 
@@ -155,7 +157,7 @@ public:
 	{
 		attack.Afflict(*this);
 	}
-	void MakeAttack(int type = 0);
+	Vec<float> MakeAttack();
 	void DVel(Vec<float> dv);
 
 private:
