@@ -48,6 +48,7 @@ void Game::Play()
 			wave++;
 			Vec<float> avapos = ava.GetPos();
 			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
+			ava.ChangeAct(Entity::Action::Move);
 			gameState = GameState::NewWave;
 		}
 
