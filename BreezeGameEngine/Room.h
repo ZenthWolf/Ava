@@ -14,7 +14,7 @@
 class Room
 {
 public:
-	Room(Character& Ava, int scenario, Keyboard& kbd);
+	Room(Character& Ava, Keyboard& kbd);
 	void Update(float dt);
 	void Draw(Graphics& gfx);
 	void Cull();

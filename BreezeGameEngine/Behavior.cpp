@@ -56,24 +56,28 @@ void Behavior::MoveUpdate(const float dt)
 	{
 		self.Move({ 0.0f, -collBox.Y0 });
 		self.BounceY();
+		self.BounceX();
 	}
 
 	else if (collBox.Y1 >= 600.0f)
 	{
 		self.Move({ 0.0f, 600.0f - collBox.Y1 });
 		self.BounceY();
+		self.BounceX();
 	}
 
 	else if (collBox.X0 <= 0.0f)
 	{
 		self.Move({ -collBox.X0, 0.0f });
 		self.BounceX();
+		self.BounceY();
 	}
 
 	else if (collBox.X1 >= 800.0f)
 	{
 		self.Move({ 800.0f - collBox.X1, 0.0f });
 		self.BounceX();
+		self.BounceY();
 	}
 }
 

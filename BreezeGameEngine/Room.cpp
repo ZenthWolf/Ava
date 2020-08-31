@@ -1,25 +1,9 @@
 #include "Room.h"
 #include <algorithm>
 
-Room::Room(Character& Ava, int scenario, Keyboard& kbd)
+Room::Room(Character& Ava, Keyboard& kbd)
 	:Ava(Ava), kbd(kbd)
 {
-	if (scenario == 0)
-	{
-		Vec<float> p = { 600.0f, 200.0f };
-		Vec<float> v = { 0.0f, -70.0f };
-
-		enemy.push_back(
-			std::make_unique<Enemy>(p, v)
-		);
-
-		obstacle.push_back(
-			std::make_unique<Obstacle>(Vec<float>(560.0f, 540.0f), Vec<float>(600.0f, 580.0f))
-		);
-		obstacle.push_back(
-			std::make_unique<Obstacle>(Vec<float>(320.0f, 50.0f), Vec<float>(360.0f, 90.0f))
-		);
-	}
 }
 
 void Room::Update(float dt)

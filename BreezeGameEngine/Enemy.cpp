@@ -99,21 +99,25 @@ void Enemy::PushBox(Rect<float> wall)
 	{
 		pos.Y = round(pos.Y - UpDeviance);
 		BounceY();
+		BounceX();
 	}
 	else if (MinDev == LeftDeviance)
 	{
 		pos.X = round(pos.X - LeftDeviance);
 		BounceX();
+		BounceY();
 	}
 	else if (MinDev == DownDeviance)
 	{
 		pos.Y = round(pos.Y + DownDeviance);
 		BounceY();
+		BounceX();
 	}
 	else if (MinDev == RightDeviance)
 	{
 		pos.X = round(pos.X + RightDeviance);
 		BounceX();
+		BounceY();
 	}
 	else
 	{

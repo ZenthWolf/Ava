@@ -20,31 +20,45 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd), gfx(wnd), rng(std::random_device()()),
-	avaController(ava, wnd.kbd)
+	avaController(ava, wnd.kbd), spawner(room.enemy, behavior, room.obstacle)
 {
-	behavior.push_back(
-		std::make_unique<Behavior>(*room.enemy[0])
-	);
+	
 }
 
 void Game::Play()
 {
-	Cull();
 	gfx.BeginFrame();
 
 	int iter = 0;
 
-	float elapseTime = ft.Mark();
-
-	while (elapseTime > 0.0f)
+	switch (gameState)
 	{
-		float dt = std::min(0.0025f, elapseTime);
-		UpdateModel(dt);
-		elapseTime -= dt;
+	case GameState::NewWave:
+	{
+		spawner.NewWave(1);
 
-		iter++;
+		gameState = GameState::Play;
+		break;
 	}
+	case GameState::Play:
+	{
+		Cull();
 
+
+
+		float elapseTime = ft.Mark();
+
+		while (elapseTime > 0.0f)
+		{
+			float dt = std::min(0.0025f, elapseTime);
+			UpdateModel(dt);
+			elapseTime -= dt;
+
+			iter++;
+		}
+		break;
+	}
+	}
 	ComposeFrame(iter);
 	gfx.EndFrame();
 }

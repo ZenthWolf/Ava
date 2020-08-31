@@ -27,6 +27,7 @@
 #include "Room.h"
 #include "Behavior.h"
 #include "Collider.h"
+#include "Spawner.h"
 
 
 class Game
@@ -47,7 +48,8 @@ private:
 	enum class GameState
 	{
 		Title,
-		Play
+		Play,
+		NewWave
 	};
 
 private:
@@ -58,13 +60,14 @@ private:
 	/*  User Variables              */
 	/********************************/
 	std::mt19937 rng;
-	GameState gameState = GameState::Play;
+	GameState gameState = GameState::NewWave;
 
 	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
 	Input avaController;
 	std::vector<std::unique_ptr<Behavior>> behavior;
 
-	Room room = Room(ava, 0, wnd.kbd);
+	Room room = Room(ava, wnd.kbd);
 	Collider collider = Collider();
+	Spawner spawner;
 	Font font = "Images//Fixedsys16x28.bmp";
 };
