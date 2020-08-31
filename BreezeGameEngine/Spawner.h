@@ -13,10 +13,7 @@ public:
 		Blob
 	};
 
-	Spawner(std::vector<std::unique_ptr<Enemy>>& nme,
-			std::vector<std::unique_ptr<Behavior>>& bhv,
-			std::vector<std::unique_ptr<Obstacle>>& obs,
-			std::vector<std::unique_ptr<Attack>>& atk);
+	Spawner(Room& room, std::vector<std::unique_ptr<Behavior>>& bhv);
 
 	void AddEnemy(Creature body, Vec<float> pos, Vec<float> vel);
 	void AddEnemy(Creature body, Creature mind, Vec<float> pos, Vec<float> vel);
@@ -28,6 +25,7 @@ public:
 private:
 	void GiveBehavior(Enemy& spwn, Creature mind);
 
+	Room& room;
 	std::vector<std::unique_ptr<Enemy>>& enemy;
 	std::vector<std::unique_ptr<Behavior>>& behavior;
 	std::vector<std::unique_ptr<Attack>>& attack;

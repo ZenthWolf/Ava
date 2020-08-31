@@ -125,7 +125,8 @@ void Enemy::BounceY()
 	vel.Y = -vel.Y;
 }
 
-BlobShot Enemy::BlobShot()
+BlobShot Enemy::BlobShot(Entity& targ)
 {
-	return class BlobShot(pos, *this);
+	Vec<float> dir = (targ.GetCollBox().Cent() - pos).Norm();
+	return class BlobShot(pos, dir, *this);
 }

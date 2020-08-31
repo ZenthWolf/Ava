@@ -171,7 +171,7 @@ public:
 
 	void BounceX();
 	void BounceY();
-	BlobShot BlobShot();
+	BlobShot BlobShot(Entity& targ);
 
 private:
 	float aimTimer = 0.0f;
@@ -383,16 +383,11 @@ private:
 class BlobShot : public Attack
 {
 public:
-	BlobShot(const Vec<float> pos, Entity& src)
-		:Attack(pos, src)
+	BlobShot(const Vec<float> pos, const Vec<float> dir, Entity& src)
+		:Attack(pos, src), dir(dir)
 	{
 		col = Color(50u, 140u, 255u);
 		hitBoxSize = { 7.0f, 7.0f };
-
-		auto rng = std::mt19937(std::random_device()());
-		std::uniform_real_distribution<float> comp(-1.0f, 1.0f);
-		dir = Vec<float>(comp(rng), comp(rng));
-		dir = dir.Norm();
 	}
 
 	void Afflict(Character& targ)

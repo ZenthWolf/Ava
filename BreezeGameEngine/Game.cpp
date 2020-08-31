@@ -20,7 +20,7 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd), gfx(wnd), rng(std::random_device()()),
-	avaController(ava, room.attack, wnd.kbd), spawner(room.enemy, behavior, room.obstacle, room.attack)
+	avaController(ava, room.attack, wnd.kbd), spawner(room, behavior)
 {
 	
 }
@@ -105,11 +105,11 @@ void Game::Cull()
 
 void Game::ComposeFrame(int iter)
 {
-	room.Draw(gfx);
-
 	std::string text = "It's alone to be dangerous. . . \nTake-a a-dis!\nNumber Iterations: ";
 	text += std::to_string(iter);
-	text += "\n\n Ava Health: ";
+	text += "\n\n Ava Health:        ";
 	text += std::to_string(ava.GetHealth());
 	font.DrawText(text, { 100, 175 }, Color(255, 255, 255), gfx);
+
+	room.Draw(gfx);
 }
