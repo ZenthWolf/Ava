@@ -46,16 +46,14 @@ public:
 	void Heal(int hp);
 	void Stun(float duration = 2.0f);
 
-	Vec<float> GetPos() const;
-	Vec<float> GetVel() const;
-	void Move(const Vec<float> dr);
-
-	virtual void PushBox(Rect<float> wall);
+	virtual Rect<float> GetCollBox() const;
 	Allegiance GetAllegiance() const;
 	Action GetAction() const;
 	void ChangeAct(const Action newAct);
-
-	virtual Rect<float> GetCollBox() const;
+	Vec<float> GetPos() const;
+	void Move(const Vec<float> dr);
+	virtual void PushBox(Rect<float> wall);
+	Vec<float> GetVel() const;
 	bool IsVulnerable() const;
 	bool IsStunned() const;
 	virtual bool Cull();
@@ -65,7 +63,6 @@ protected:
 	virtual ~Entity() = default;
 
 	Entity(Vec<float> pos, Allegiance allegiance);
-	Entity(Vec<float> pos, int health);
 	Entity(Vec<float> pos, Vec<float> vel, int health, Allegiance allegiance);
 	void VulnerableTimer(float dt);
 	void StatusUpdate(float dt);

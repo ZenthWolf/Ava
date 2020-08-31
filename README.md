@@ -5,7 +5,11 @@ Controls:
 
 Arrows keys = Move
 
-Z,X,C       = Attacks
+<space>,X,C       = Attacks
+
+<space> - Sword Strike
+X       - Stun Strike
+C       - Shoot Arrow
 
 Upcoming Features:
 

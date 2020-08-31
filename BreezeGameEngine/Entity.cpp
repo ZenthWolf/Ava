@@ -6,12 +6,6 @@ Entity::Entity(Vec<float> pos, Allegiance allegiance)
 {
 }
 
-
-Entity::Entity(Vec<float> pos, int health)
-	:pos(pos), health(health)
-{
-}
-
 Entity::Entity(Vec<float> pos, Vec<float> vel, int health, Allegiance allegiance)
 	: pos(pos), vel(vel), health(health), allegiance(allegiance)
 {
