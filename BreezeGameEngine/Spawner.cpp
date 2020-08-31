@@ -46,6 +46,8 @@ void Spawner::ClearAll()
 
 void Spawner::NewWave(int scenario)
 {
+	ClearAll();
+
 	switch (scenario)
 	{
 
@@ -168,7 +170,7 @@ void Spawner::NewWave(int scenario)
 		}
 		else
 		{
-			NewWave(scenario % 3 + 1);
+			NewWave((scenario - 1) % 3 + 1);
 		}
 	}
 

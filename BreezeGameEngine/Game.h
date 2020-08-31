@@ -65,9 +65,12 @@ private:
 	Character ava = Character({ 100.0f, 100.0f }, wnd.kbd);
 	Input avaController;
 	std::vector<std::unique_ptr<Behavior>> behavior;
-
 	Room room = Room(ava, wnd.kbd);
+	
 	Collider collider = Collider();
 	Spawner spawner;
+
+	int wave = 1;
+
 	Font font = "Images//Fixedsys16x28.bmp";
 };

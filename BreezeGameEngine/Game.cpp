@@ -35,7 +35,7 @@ void Game::Play()
 	{
 	case GameState::NewWave:
 	{
-		spawner.NewWave(1);
+		spawner.NewWave(wave);
 
 		gameState = GameState::Play;
 		break;
@@ -43,8 +43,13 @@ void Game::Play()
 	case GameState::Play:
 	{
 		Cull();
-
-
+		if (room.enemy.size() == 0)
+		{
+			wave++;
+			Vec<float> avapos = ava.GetPos();
+			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
+			gameState = GameState::NewWave;
+		}
 
 		float elapseTime = ft.Mark();
 
