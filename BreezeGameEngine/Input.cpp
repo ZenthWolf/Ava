@@ -60,7 +60,7 @@ void Input::ReadInput()
 				}
 
 				Ava.ChangeAct(Entity::Action::Attack);
-				Ava.AtkCooldown(0.16f);
+				Ava.AtkCooldown(0.35f);
 
 				break;
 			}

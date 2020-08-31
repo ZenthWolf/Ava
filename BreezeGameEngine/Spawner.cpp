@@ -41,8 +41,8 @@ void Spawner::ClearAll()
 {
 	behavior.clear();
 	enemy.clear();
+	attack.clear();
 	obstacle.clear();
-
 }
 
 void Spawner::NewWave(int scenario)
