@@ -2,8 +2,9 @@
 
 Spawner::Spawner(std::vector<std::unique_ptr<Enemy>>& nme, 
 				 std::vector<std::unique_ptr<Behavior>>& bhv, 
-				 std::vector<std::unique_ptr<Obstacle>>& obs)
-	:enemy(nme), behavior(bhv), obstacle(obs)
+				 std::vector<std::unique_ptr<Obstacle>>& obs,
+				 std::vector<std::unique_ptr<Attack>>& atk)
+	:enemy(nme), behavior(bhv), obstacle(obs), attack(atk)
 {
 }
 
@@ -184,7 +185,7 @@ void Spawner::GiveBehavior(Enemy& spwn, Creature mind)
 	case Creature::Blob:
 	{
 		behavior.push_back(
-			std::make_unique<Behavior>(spwn)
+			std::make_unique<Behavior>(spwn, attack)
 		);
 		break;
 	}

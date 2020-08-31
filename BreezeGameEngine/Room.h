@@ -21,6 +21,7 @@ public:
 
 	Character& Ava;
 	std::vector<std::unique_ptr<Enemy>> enemy;
+	std::vector<std::unique_ptr<Attack>> attack;
 	std::vector<std::unique_ptr<Obstacle>> obstacle;
 
 private:

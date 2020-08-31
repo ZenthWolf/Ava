@@ -1,8 +1,10 @@
 #include "Behavior.h"
 
-Behavior::Behavior(Enemy& self)
-	:self(self), rng(std::random_device()())
+Behavior::Behavior(Enemy& self, std::vector<std::unique_ptr<Attack>>& atk)
+	:self(self), attack(atk), rng(std::random_device()())
 {
+	std::uniform_real_distribution<float> timer(0.0f, 3.0f);
+	atkTimer = -timer(rng);
 }
 
 void Behavior::Update(const float dt)
@@ -98,7 +100,9 @@ void Behavior::AimUpdate(const float dt)
 	aimTimer += dt;
 	if (aimTimer >= 0.0f)
 	{
-		self.BlobShot();
+		attack.push_back(
+			std::make_unique<BlobShot>(self.BlobShot())
+		);
 		self.StateChange(Enemy::Action::Move);
 	}
 }

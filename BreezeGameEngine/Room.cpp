@@ -19,14 +19,18 @@ void Room::Update(float dt)
 
 void Room::Draw(Graphics& gfx)
 {
-	for (int i = 0; i < obstacle.size(); i++)
+	for (auto& o : obstacle)
 	{
-		obstacle[i]->Draw(gfx);
+		o->Draw(gfx);
 	}
 	Ava.Draw(gfx);
-	for (int i = 0; i < enemy.size(); i++)
+	for (auto& e : enemy)
 	{
-		enemy[i]->Draw(gfx);
+		e->Draw(gfx);
+	}
+	for (auto& a : attack)
+	{
+		a->Draw(gfx);
 	}
 }
 

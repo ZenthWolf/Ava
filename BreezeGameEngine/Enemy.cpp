@@ -145,9 +145,7 @@ void Enemy::BounceY()
 	vel.Y = -vel.Y;
 }
 
-void Enemy::BlobShot()
+BlobShot Enemy::BlobShot()
 {
-	attack.push_back(
-		std::make_unique<class BlobShot>(pos)
-	);
+	return class BlobShot(pos);
 }

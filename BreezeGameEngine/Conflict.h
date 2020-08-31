@@ -24,10 +24,8 @@ class BlobShot;
 class Attack
 {
 public:
-	//VConcrete Elements to be VisitedV
 	virtual void Afflict(Character& targ) = 0;
 	virtual void Afflict(Enemy& targ) = 0;
-	//^Concrete Elements to be Visited^
 
 	Attack(const Vec<float> pos, const Color col = Colors::Red);
 	Attack()
@@ -202,7 +200,7 @@ public:
 	void BounceX();
 	void BounceY();
 	void StateChange(const Action newstate);
-	void BlobShot();
+	BlobShot BlobShot();
 
 private:
 	Action state = Action::Move;

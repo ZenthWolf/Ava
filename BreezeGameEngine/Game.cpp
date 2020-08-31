@@ -20,7 +20,7 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd), gfx(wnd), rng(std::random_device()()),
-	avaController(ava, wnd.kbd), spawner(room.enemy, behavior, room.obstacle)
+	avaController(ava, wnd.kbd), spawner(room.enemy, behavior, room.obstacle, room.attack)
 {
 	
 }
@@ -75,6 +75,11 @@ void Game::UpdateModel(float dt)
 	for (auto& bhv : behavior)
 	{
 		bhv->Update(dt);
+	}
+	
+	for (auto& atk : room.attack)
+	{
+		atk->Update(dt);
 	}
 
 	room.Update(dt);

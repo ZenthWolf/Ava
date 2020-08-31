@@ -15,7 +15,8 @@ public:
 
 	Spawner(std::vector<std::unique_ptr<Enemy>>& nme,
 			std::vector<std::unique_ptr<Behavior>>& bhv,
-			std::vector<std::unique_ptr<Obstacle>>& obs);
+			std::vector<std::unique_ptr<Obstacle>>& obs,
+			std::vector<std::unique_ptr<Attack>>& atk);
 
 	void AddEnemy(Creature body, Vec<float> pos, Vec<float> vel);
 	void AddEnemy(Creature body, Creature mind, Vec<float> pos, Vec<float> vel);
@@ -29,5 +30,6 @@ private:
 
 	std::vector<std::unique_ptr<Enemy>>& enemy;
 	std::vector<std::unique_ptr<Behavior>>& behavior;
+	std::vector<std::unique_ptr<Attack>>& attack;
 	std::vector<std::unique_ptr<Obstacle>>& obstacle;
 };
