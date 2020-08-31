@@ -26,3 +26,30 @@ void Collider::StaticCollider(Room& room) const
 		}
 	}
 }
+
+void Collider::AttackCollider(Room& room) const
+{
+	for (auto& atk : room.attack)
+	{
+		Rect<float> atkBox = atk->GetCollBox();
+
+		if (atk->GetAllegiance() == Entity::Allegiance::Enemy)
+		{
+			if (atkBox.CollWith(room.Ava.GetCollBox()));
+			{
+				room.Ava.OnHit(*atk);
+			}
+		}
+
+		else if (atk->GetAllegiance() == Entity::Allegiance::Ava)
+		{
+			for (auto& nme : room.enemy)
+			{
+				if (atkBox.CollWith(nme->GetCollBox()))
+				{
+					nme->OnHit(*atk);
+				}
+			}
+		}
+	}
+}

@@ -20,6 +20,11 @@ Rect<float> Attack::GetCollBox() const
 	return Rect<float>(pos, pos + hitBoxSize);
 }
 
+Entity::Allegiance Attack::GetAllegiance() const
+{
+	return src.GetAllegiance();
+}
+
 bool Attack::Cull()
 {
 	return cull;

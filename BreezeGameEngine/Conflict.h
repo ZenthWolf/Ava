@@ -21,29 +21,6 @@ class ArrowShot;
 
 class BlobShot;
 
-class Attack
-{
-public:
-	virtual void Afflict(Character& targ) = 0;
-	virtual void Afflict(Enemy& targ) = 0;
-
-	Attack(const Vec<float> pos, Entity& source, const Color col = Colors::Red);
-
-	virtual void Update(float dt);
-	void Draw(Graphics& gfx) const;
-	Rect<float> GetCollBox() const;
-	virtual bool Cull();
-
-protected:
-	Vec<float> pos;
-	float vel = 0.0f;
-	Vec<float> hitBoxSize;
-	bool cull = false;
-	Color col = Colors::Red;
-
-	Entity& src;
-};
-
 class Entity
 {
 public:
@@ -104,6 +81,31 @@ protected:
 	Vec<float> pos;
 	Vec<float> vel = { 0.0f, 0.0f };
 	Vec<float> collBoxSize = { 0.0f, 0.0f };
+};
+
+class Attack
+{
+public:
+	virtual void Afflict(Character& targ) = 0;
+	virtual void Afflict(Enemy& targ) = 0;
+
+	Attack(const Vec<float> pos, Entity& source, const Color col = Colors::Red);
+
+	virtual void Update(float dt);
+	void Draw(Graphics& gfx) const;
+
+	Rect<float> GetCollBox() const;
+	Entity::Allegiance GetAllegiance() const;
+	virtual bool Cull();
+
+protected:
+	Vec<float> pos;
+	float vel = 0.0f;
+	Vec<float> hitBoxSize;
+	bool cull = false;
+	Color col = Colors::Red;
+
+	Entity& src;
 };
 
 class Character : public Entity
@@ -311,7 +313,7 @@ public:
 		{
 		case Character::Sequence::StandingLeft:
 		{
-			hitBoxSize = { 10.0f, 5.0f };
+			hitBoxSize = { 15.0f, 5.0f };
 			pos.X -= hitBoxSize.X;
 			pos.Y -= hitBoxSize.Y / 2;
 			dir = { -1, 0 };
@@ -319,14 +321,14 @@ public:
 		}
 		case Character::Sequence::StandingRight:
 		{
-			hitBoxSize = { 10.0f, 5.0f };
+			hitBoxSize = { 15.0f, 5.0f };
 			pos.Y -= hitBoxSize.Y / 2;
 			dir = { 1, 0 };
 			break;
 		}
 		case Character::Sequence::StandingUp:
 		{
-			hitBoxSize = { 5.0f, 10.0f };
+			hitBoxSize = { 5.0f, 15.0f };
 			pos.X -= hitBoxSize.X / 2;
 			pos.Y -= hitBoxSize.Y;
 			dir = { 0, -1 };
@@ -334,13 +336,13 @@ public:
 		}
 		case Character::Sequence::StandingDown:
 		{
-			hitBoxSize = { 5.0f, 10.0f };
+			hitBoxSize = { 5.0f, 15.0f };
 			pos.X -= hitBoxSize.X/2;
 			dir = { 0, 1 };
 			break;
 		}
 		}
-		vel = 120.0f;
+		vel = 150.0f;
 	}
 
 	void Afflict(Character& targ)
@@ -421,6 +423,6 @@ public:
 	}
 
 private:
-	float vel = 70.0f;
+	float vel = 100.0f;
 	Vec<float> dir;
 };
