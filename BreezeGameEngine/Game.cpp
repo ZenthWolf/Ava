@@ -20,7 +20,8 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd), gfx(wnd), rng(std::random_device()()),
-	avaController(ava, room.attack, wnd.kbd), spawner(room, behavior)
+	avaController(ava, room.attack, wnd.kbd), spawner(room, behavior),
+	Stats(ava, room)
 {
 	
 }
@@ -112,4 +113,6 @@ void Game::ComposeFrame(int iter)
 	font.DrawText(text, { 100, 175 }, Color(255, 255, 255), gfx);
 
 	room.Draw(gfx);
+
+	Stats.Draw(wave, gfx);
 }

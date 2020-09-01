@@ -24,7 +24,7 @@ public:
 		Y1 = v1.Y;
 	}
 
-	Rect FromCent(Vec<T> center, T halfWidth, T halfHeight)
+	static Rect FromCent(Vec<T> center, T halfWidth, T halfHeight)
 	{
 		Vec<T> half = { halfWidth, halfHeight };
 		return Rect(center - half, center + half);

@@ -9,7 +9,7 @@ class Font
 {
 public:
 	Font(const std::string& filename, Color chroma = Colors::White);
-	void DrawText(const std::string& text, const Vec<int>& pos, Color fontCol, Graphics& gfx);
+	void DrawText(const std::string& text, const Vec<int>& pos, Color fontCol, Graphics& gfx) const;
 
 private:
 	Rect<int> MapGlyphRect(char c) const;

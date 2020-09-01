@@ -11,7 +11,7 @@ Font::Font(const std::string& filename, Color chroma)
 	assert(glyphHeight * nRows == fontSheet.Height());
 }
 
-void Font::DrawText(const std::string& text, const Vec<int>& pos, Color fontCol, Graphics& gfx)
+void Font::DrawText(const std::string& text, const Vec<int>& pos, Color fontCol, Graphics& gfx) const
 {
 	/** Create functor object **/
 	SpriteEffect::Substitute fx(chromakey, fontCol);

@@ -28,6 +28,7 @@
 #include "Behavior.h"
 #include "Collider.h"
 #include "Spawner.h"
+#include "HUD.h"
 
 
 class Game
@@ -64,11 +65,13 @@ private:
 
 	Character ava = Character({ 100.0f, 100.0f }, 3, wnd.kbd);
 	Input avaController;
+
 	std::vector<std::unique_ptr<Behavior>> behavior;
 	Room room = Room(ava, wnd.kbd);
 	
 	Collider collider = Collider();
 	Spawner spawner;
+	HUD Stats;
 
 	int wave = 1;
 
