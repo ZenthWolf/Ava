@@ -8,10 +8,10 @@ class Beveler
 public:
 	Beveler() = default;
 	Beveler(Color base);
-	void DrawOuterBev(Rect<int>& Rect, int size, Graphics& gfx);
-	void DrawInnerBev(Rect<int>& Rect, int size, Graphics& gfx);
-	void DrawBevBrick(Rect<int>& Rect, int size, Graphics& gfx);
-	void DrawBevBorder(Rect<int>& Rect, int size, Graphics& gfx);
+	void DrawOuterBev(Rect<int>& Rect, int size, Graphics& gfx) const;
+	void DrawInnerBev(Rect<int>& Rect, int size, Graphics& gfx) const;
+	void DrawBevBrick(Rect<int>& Rect, int size, Graphics& gfx) const;
+	void DrawBevBorder(Rect<int>& Rect, int size, Graphics& gfx) const;
 	void ChangeBaseColor(Color newbase);
 private:
 	static constexpr float LeftFactor = 1.10f;

@@ -29,6 +29,7 @@
 #include "Collider.h"
 #include "Spawner.h"
 #include "HUD.h"
+#include "TextBox.h"
 
 
 class Game
@@ -72,6 +73,7 @@ private:
 	Collider collider = Collider();
 	Spawner spawner;
 	HUD Stats;
+	TextBox	textBox;
 
 	int wave = 1;
 

@@ -113,5 +113,7 @@ void Game::ComposeFrame(int iter)
 
 	room.Draw(gfx);
 
-	Stats.Draw(wave, gfx); 
+	Stats.Draw(wave, gfx);
+
+	textBox.DrawFrame(gfx);
 }
