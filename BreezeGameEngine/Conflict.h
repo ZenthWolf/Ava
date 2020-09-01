@@ -37,12 +37,15 @@ public:
 		Stunned,
 		Move,
 		Attack,
+		KnockBack,
 		Jump
 	};
 
 	virtual void Update(float const dt) = 0;
 	virtual void Draw(Graphics& gfx) = 0;
 	void TakeDamage(int hp);
+	void KnockBack(Vec<float> dir, float dt = 0.14f);
+	virtual void Recoil(float dt);
 	void Heal(int hp);
 	void Stun(float duration = 2.0f);
 
@@ -72,6 +75,9 @@ protected:
 	int health;
 	bool vulnerable = true;
 	float invultime = 0.0f;
+	float recoilTime = 0.0f;
+	Vec<float> recoilDir = { 0.0f, 0.0f };
+	float recoilSpeed = 500.0f;
 	bool stun = false;
 	float stuntime = 0.0f;
 	bool flash = false;
@@ -127,6 +133,7 @@ public:
 	void Draw(Graphics& gfx, Color sub) const;
 	void Update(float const dt) override;
 	Rect<float> GetCollBox() const override;
+	void Recoil(float dt) override;
 	Sequence GetFacing() const;
 	int GetHealth() const;
 
@@ -226,6 +233,8 @@ public:
 		if (targ.IsVulnerable())
 		{
 			targ.TakeDamage(2);
+			Vec<float> recoilDir =  targ.GetCollBox().Cent()  - src.GetCollBox().Cent();
+			targ.KnockBack(recoilDir);
 		}
 	}
 
@@ -288,6 +297,8 @@ public:
 		{
 			targ.TakeDamage(1);
 			targ.Stun();
+			Vec<float> recoilDir = targ.GetCollBox().Cent() - src.GetCollBox().Cent();
+			targ.KnockBack(recoilDir);
 		}
 	}
 
@@ -354,6 +365,8 @@ public:
 		{
 			targ.TakeDamage(1);
 			cull = true;
+
+			targ.KnockBack(dir);
 		}
 	}
 
@@ -393,6 +406,7 @@ public:
 		{
 			targ.TakeDamage(1);
 			cull = true;
+			targ.KnockBack(dir);
 		}
 	}
 

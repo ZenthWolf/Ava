@@ -34,6 +34,12 @@ void Behavior::Update(const float dt)
 		break;
 	}
 
+	case Entity::Action::KnockBack:
+	{
+		RecoilUpdate(dt);
+		break;
+	}
+
 	case Entity::Action::Stunned:
 	{
 		break;
@@ -52,30 +58,35 @@ void Behavior::MoveUpdate(const float dt)
 	AttackTimer(dt);
 
 	self.Move(self.GetVel() * dt);
+	WallCheck();
+}
+
+void Behavior::WallCheck()
+{
 	Rect<float> collBox = self.GetCollBox();
 
-	if (collBox.Y0 <= 0.0f)
+	if (collBox.Y0 < 0.0f)
 	{
 		self.Move({ 0.0f, -collBox.Y0 });
 		self.BounceY();
 		self.BounceX();
 	}
 
-	else if (collBox.Y1 >= 600.0f)
+	else if (collBox.Y1 > 600.0f)
 	{
 		self.Move({ 0.0f, 600.0f - collBox.Y1 });
 		self.BounceY();
 		self.BounceX();
 	}
 
-	else if (collBox.X0 <= 0.0f)
+	else if (collBox.X0 < 0.0f)
 	{
 		self.Move({ -collBox.X0, 0.0f });
 		self.BounceX();
 		self.BounceY();
 	}
 
-	else if (collBox.X1 >= 800.0f)
+	else if (collBox.X1 > 800.0f)
 	{
 		self.Move({ 800.0f - collBox.X1, 0.0f });
 		self.BounceX();
@@ -105,5 +116,11 @@ void Behavior::AimUpdate(const float dt)
 		);
 		self.ChangeAct(Entity::Action::Move);
 	}
+}
+
+void Behavior::RecoilUpdate(const float dt)
+{
+	self.Recoil(dt);
+	WallCheck();
 }
 

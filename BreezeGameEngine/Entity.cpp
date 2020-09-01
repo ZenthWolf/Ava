@@ -55,11 +55,32 @@ void Entity::TakeDamage(int hp)
 	assert(hp >= 0);
 	health -= hp;
 	vulnerable = false;
-	invultime = -0.5f;
+	invultime = -0.7f;
 	flash = true;
 	if (health <= 0)
 	{
 		cull = true;
+	}
+}
+
+void Entity::KnockBack(Vec<float> dir, float dt)
+{
+	recoilTime = -dt;
+	recoilDir = dir.Norm();
+	ChangeAct(Action::KnockBack);
+}
+
+void Entity::Recoil(float dt)
+{
+	recoilTime += dt;
+
+	if (recoilTime < 0.0f)
+	{
+		Move(recoilDir * dt * recoilSpeed);
+	}
+	else if (vulnerable)
+	{
+		ChangeAct(Action::Move);
 	}
 }
 

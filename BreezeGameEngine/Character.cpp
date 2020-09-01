@@ -162,6 +162,11 @@ void Character::Update(float const dt)
 		}
 	}
 
+	case Action::KnockBack:
+	{
+		Recoil(dt);
+	}
+
 	}
 
 	animation[(int)curSeq].Update(dt);
@@ -174,6 +179,18 @@ Rect<float> Character::GetCollBox() const
 	Vec<float> v0 = pos + Vec<float>(25.0f, 20.0f);
 	Vec<float> v1 = pos + Vec<float>(65.0f, 70.0f);
 	return Rect<float>( v0, v1 );
+}
+
+void Character::Recoil(float dt)
+{
+	recoilTime += dt;
+
+	Move(recoilDir * dt * recoilSpeed);
+	
+	if (recoilTime >= 0.0f)
+	{
+		ChangeAct(Action::Move);
+	}
 }
 
 Character::Sequence Character::GetFacing() const

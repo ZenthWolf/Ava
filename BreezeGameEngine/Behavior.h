@@ -16,8 +16,10 @@ public:
 
 private:
 	void MoveUpdate(const float dt);
+	void WallCheck();
 	void AttackTimer(const float dt);
 	void AimUpdate(const float dt);
+	void RecoilUpdate(const float dt);
 
 	Enemy& self;
 	Room& room;
