@@ -9,7 +9,9 @@ HUD::HUD(Character& ava, Room& room)
 void HUD::Draw(const int wave, Graphics& gfx) const
 {
 	DrawWave(wave, gfx);
-	DrawHealth(Ava.GetHealth(), gfx);
+	DrawHealth(gfx);
+	DrawArwCount(gfx);
+	DrawNME(gfx);
 }
 
 void HUD::DrawWave(const int wave, Graphics& gfx) const
@@ -65,10 +67,10 @@ std::string HUD::WaveName(const int wave) const
 	return name;
 }
 
-void HUD::DrawHealth(const int hp, Graphics& gfx) const
+void HUD::DrawHealth(Graphics& gfx) const
 {
 	std::string text = "Health: ";
-	text += std::to_string(hp);
+	text += std::to_string(Ava.GetHealth());
 
 	font.DrawText(text, Vec<int>(healthPosition), fontCol, gfx);
 
@@ -92,4 +94,21 @@ void HUD::HPIcon(const Vec<float> pos, bool fill, Graphics& gfx) const
 	{
 		gfx.DrawRect(frnt, Colors::Black);
 	}
+}
+
+void HUD::DrawArwCount(Graphics& gfx) const
+{
+	std::string text = "Arrows: \n  ";
+	//text += std::to_string(room.enemy.size());
+	text += "inf";
+	font.DrawText(text, Vec<int>(arwPosition), fontCol, gfx);
+	
+}
+
+void HUD::DrawNME(Graphics& gfx) const
+{
+	std::string text = "Enemies: \n  ";
+	text += std::to_string(room.enemy.size());
+
+	font.DrawText(text, Vec<int>(nmePosition), fontCol, gfx);
 }

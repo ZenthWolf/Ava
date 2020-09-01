@@ -106,13 +106,11 @@ void Game::Cull()
 
 void Game::ComposeFrame(int iter)
 {
-	std::string text = "It's alone to be dangerous. . . \nTake-a a-dis!\nNumber Iterations: ";
+	std::string text ="No. of Iterations: ";
 	text += std::to_string(iter);
-	text += "\n\n Ava Health:        ";
-	text += std::to_string(ava.GetHealth());
-	font.DrawText(text, { 100, 175 }, Color(255, 255, 255), gfx);
+	font.DrawText(text, { 20, 545 }, Color(255, 255, 255), gfx);
 
 	room.Draw(gfx);
 
-	Stats.Draw(wave, gfx);
+	Stats.Draw(wave, gfx); 
 }
