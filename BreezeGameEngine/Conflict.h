@@ -104,7 +104,6 @@ public:
 
 protected:
 	Vec<float> pos;
-	float vel = 0.0f;
 	Vec<float> hitBoxSize;
 	bool cull = false;
 	Color col = Colors::Red;
@@ -352,7 +351,6 @@ public:
 			break;
 		}
 		}
-		vel = 150.0f;
 	}
 
 	void Afflict(Character& targ)
@@ -372,7 +370,7 @@ public:
 
 	void Update(float dt) override
 	{
-		pos += dir * vel * dt;
+		pos += dir * spd * dt;
 	}
 
 	bool Cull() override
@@ -388,6 +386,7 @@ public:
 
 private:
 	Vec<float> dir;
+	float spd = 250.0f;
 };
 
 class BlobShot : public Attack
@@ -417,7 +416,7 @@ public:
 
 	void Update(float dt) override
 	{
-		pos += dir * vel * dt;
+		pos += dir * spd * dt;
 	}
 	
 	bool Cull() override
@@ -432,6 +431,6 @@ public:
 	}
 
 private:
-	float vel = 100.0f;
+	float spd = 200.0f;
 	Vec<float> dir;
 };
