@@ -16,7 +16,8 @@ public:
 
 private:
 	void MoveUpdate(const float dt);
-	void WallCheck();
+	Entity::Facing WallCheck();
+	void WallHit(Entity::Facing wall);
 	void AttackTimer(const float dt);
 	void AimUpdate(const float dt);
 	void RecoilUpdate(const float dt);

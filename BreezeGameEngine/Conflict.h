@@ -40,6 +40,14 @@ public:
 		KnockBack,
 		Jump
 	};
+	enum class Facing
+	{
+		Left,
+		Up,
+		Right,
+		Down,
+		None
+	};
 
 	virtual void Update(float const dt) = 0;
 	virtual void Draw(Graphics& gfx) = 0;

@@ -117,6 +117,7 @@ void Enemy::PushBox(Rect<float> wall)
 
 void Enemy::BounceX()
 {
+	if (!(curAct == Action::KnockBack))
 	vel.X = -vel.X;
 }
 

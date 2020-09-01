@@ -58,37 +58,46 @@ void Behavior::MoveUpdate(const float dt)
 	AttackTimer(dt);
 
 	self.Move(self.GetVel() * dt);
-	WallCheck();
+	WallHit(WallCheck());
 }
 
-void Behavior::WallCheck()
+Entity::Facing Behavior::WallCheck()
 {
 	Rect<float> collBox = self.GetCollBox();
 
 	if (collBox.Y0 < 0.0f)
 	{
 		self.Move({ 0.0f, -collBox.Y0 });
-		self.BounceY();
-		self.BounceX();
+		return Entity::Facing::Up;
 	}
 
 	else if (collBox.Y1 > 600.0f)
 	{
 		self.Move({ 0.0f, 600.0f - collBox.Y1 });
-		self.BounceY();
-		self.BounceX();
+		return Entity::Facing::Down;
 	}
 
 	else if (collBox.X0 < 0.0f)
 	{
 		self.Move({ -collBox.X0, 0.0f });
-		self.BounceX();
-		self.BounceY();
+		return Entity::Facing::Left;
 	}
 
 	else if (collBox.X1 > 800.0f)
 	{
 		self.Move({ 800.0f - collBox.X1, 0.0f });
+		return Entity::Facing::Right;
+	}
+	else
+	{
+		return Entity::Facing::None;
+	}
+}
+
+void Behavior::WallHit(Entity::Facing wall)
+{
+	if (!(wall == Entity::Facing::None))
+	{
 		self.BounceX();
 		self.BounceY();
 	}
