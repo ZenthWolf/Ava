@@ -53,6 +53,9 @@ public:
 	Allegiance GetAllegiance() const;
 	Action GetAction() const;
 	void ChangeAct(const Action newAct);
+
+	int GetHealth() const;
+	int GetMaxHealth() const;
 	Vec<float> GetPos() const;
 	void Move(const Vec<float> dr);
 	virtual void PushBox(Rect<float> wall);
@@ -73,6 +76,7 @@ protected:
 	Allegiance allegiance = Allegiance::None;
 	Action curAct = Action::Move;
 	int health;
+	int maxHealth;
 	bool vulnerable = true;
 	float invultime = 0.0f;
 	float recoilTime = 0.0f;
@@ -134,7 +138,6 @@ public:
 	Rect<float> GetCollBox() const override;
 	void Recoil(float dt) override;
 	Sequence GetFacing() const;
-	int GetHealth() const;
 
 	void OnHit(class Attack& attack) override
 	{

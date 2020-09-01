@@ -199,8 +199,3 @@ Character::Sequence Character::GetFacing() const
 {
 	return curSeq;
 }
-
-int Character::GetHealth() const
-{
-	return health;
-}

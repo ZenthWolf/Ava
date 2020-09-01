@@ -7,7 +7,7 @@ Entity::Entity(Vec<float> pos, Allegiance allegiance)
 }
 
 Entity::Entity(Vec<float> pos, Vec<float> vel, int health, Allegiance allegiance)
-	: pos(pos), vel(vel), health(health), allegiance(allegiance)
+	: pos(pos), vel(vel), health(health), maxHealth(health), allegiance(allegiance)
 {
 }
 
@@ -87,6 +87,7 @@ void Entity::Recoil(float dt)
 void Entity::Heal(int hp)
 {
 	health += hp;
+	health = min(health, maxHealth);
 }
 
 void Entity::Stun(float duration)
@@ -186,6 +187,16 @@ Entity::Action Entity::GetAction() const
 void Entity::ChangeAct(const Action newAct)
 {
 	curAct = newAct;
+}
+
+int Entity::GetHealth() const
+{
+	return health;
+}
+
+int Entity::GetMaxHealth() const
+{
+	return maxHealth;
 }
 
 

@@ -69,8 +69,7 @@ std::string HUD::WaveName(const int wave) const
 
 void HUD::DrawHealth(Graphics& gfx) const
 {
-	std::string text = "Health: ";
-	text += std::to_string(Ava.GetHealth());
+	std::string text = "Life: ";
 
 	font.DrawText(text, Vec<int>(healthPosition), fontCol, gfx);
 

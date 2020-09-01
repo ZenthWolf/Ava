@@ -47,6 +47,7 @@ void Game::Play()
 		if (room.enemy.size() == 0)
 		{
 			wave++;
+
 			ava.Heal(wave % 2);
 			Vec<float> avapos = ava.GetPos();
 			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
