@@ -160,11 +160,13 @@ void Character::Update(float const dt)
 		{
 			ChangeAct(Action::Move);
 		}
+		break;
 	}
 
 	case Action::KnockBack:
 	{
 		Recoil(dt);
+		break;
 	}
 
 	}
