@@ -26,37 +26,40 @@ void TextBox::DrawTxt(Graphics& gfx) const
 {
 	std::string text0 = "The First Line of Text";
 	std::string text1 = "The Next Line of Text";
-	std::string textLong = "Did you realize there is a limit to the amount of text you can write on a line before it goes out of the text box or even off the screen? I bet you didn't!\nYOU FOOL!";
+	std::string textLong = "Did you realize there is a limit to the amount of text you can write on a line before it goes out of the text box or even off the screen? I bet you didn't!!!!!\nYOU FOOL!";
 
 	font.DrawText(text0, boxPos + boxBuffer, Colors::White, gfx);
 	font.DrawText(text1, boxPos + boxBuffer + lineOffSet, Colors::White, gfx);
+	font.DrawText(std::string(textLong.begin()+4, textLong.begin()+7), boxPos + boxBuffer + lineOffSet*2, Colors::White, gfx);
 
-	int beginChar = 0;
-	int nChar = 0;
-	int LineLengthMax = lineEndPos - boxPos.X - boxBuffer.X;
-	int LineLength = 0;
+	auto begin = textLong.begin();
+	auto end = textLong.begin();
 	int lineNum = 2;
 
 	//OK, there definitely has to be a cooler way to do this...
 
-	while ((beginChar + nChar) < textLong.size())
+	while (end != textLong.end())
 	{
-		for (int c = 0; c < textLong.size() - beginChar; c++)
+		int LineLengthMax = lineEndPos - boxPos.X - boxBuffer.X;
+		int LineLength = 0;
+
+		for (auto c = begin; c <= textLong.end(); ++c)
 		{
-			char thisChar = textLong[beginChar + c];
+			if (c == textLong.end())
+			{
+				end = c;
+				break;
+			}
+
+			char thisChar = *c;
 
 			if (thisChar == ' ')
 			{
-				nChar = c;
+				end = c;
 			}
 			else if (thisChar == '\n')
 			{
-				nChar = c;
-				break;
-			}
-			else if (c + 1 == textLong.size() - beginChar)
-			{
-				nChar = c + 1;
+				end = c;
 				break;
 			}
 
@@ -70,12 +73,16 @@ void TextBox::DrawTxt(Graphics& gfx) const
 			}
 		}
 
-		font.DrawText(textLong.substr(beginChar, nChar), boxPos + boxBuffer + lineOffSet * lineNum - Vec<int>{0,300}, Colors::White, gfx);
+		font.DrawText(std::string(begin, end), boxPos + boxBuffer + lineOffSet * lineNum - Vec<int>{0,300}, Colors::White, gfx);
 
 		lineNum++;
-		//assumes char after a space/newline is not a space, but we can deal with that later
-		beginChar += nChar+1;
-		nChar = 0;
-		LineLength = 0;
+		if (end != textLong.end())
+		{
+			begin = end + 1;
+			while (*begin == ' ' || *begin == '\n')
+			{
+				++begin;
+			}
+		}
 	}
 }
