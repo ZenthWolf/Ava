@@ -56,6 +56,11 @@ public:
 		return Rect<T>(X0 - offx, Y0 - offy, X1 + offx, Y1 + offy);
 	}
 
+	Rect GetExpand(Vec<T> offset) const
+	{
+		return GetExpand(offset.X, offset.Y);
+	}
+
 	Vec<T> Cent() const
 	{
 		return { (X1 + X0) / (T)2, (Y1 + Y0) / (T)2, };

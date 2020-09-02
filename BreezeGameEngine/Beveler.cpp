@@ -92,7 +92,7 @@ void Beveler::DrawBevBrick(Rect<int>& Rect, int size, Graphics& gfx) const
 	gfx.DrawRect(Rect.GetExpand(-(size)), BaseColor);
 }
 
-void Beveler::DrawBevBorder(Rect<int>& Rect, int size, Graphics& gfx) const
+void Beveler::DrawBevBorder(const Rect<int>& Rect, const int size, Graphics& gfx) const
 {
 	DrawOuterBev(Rect.GetExpand((2 * size)), size, gfx);
 	DrawInnerBev(Rect.GetExpand((size)), size, gfx);
