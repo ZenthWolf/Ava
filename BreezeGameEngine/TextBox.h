@@ -10,6 +10,7 @@ public:
 	void Draw(Graphics& gfx) const;
 
 private:
+	std::vector<std::string> ProcessText(const std::string fulltext) const;
 	void DrawFrame(Graphics& gfx) const;
 	void DrawTxt(Graphics& gfx) const;
 

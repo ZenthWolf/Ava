@@ -15,37 +15,21 @@ void TextBox::Draw(Graphics& gfx) const
 	DrawTxt(gfx);
 }
 
-void TextBox::DrawFrame(Graphics& gfx) const
+std::vector<std::string> TextBox::ProcessText(const std::string fulltext) const
 {
-	bev.DrawBevBorder(Box, boxBorderThickness, gfx);
-	gfx.DrawRect(Box, Colors::DarkGray);
-	gfx.DrawRect(Rect<int>(boxPos.X + boxBuffer.X, boxPos.Y + boxBuffer.Y, lineEndPos, boxPos.Y + boxSize.Y ), Colors::Green);
-}
+	std::vector<std::string> line;
 
-void TextBox::DrawTxt(Graphics& gfx) const
-{
-	std::string text0 = "The First Line of Text";
-	std::string text1 = "The Next Line of Text";
-	std::string textLong = "Did you realize there is a limit to the amount of text you can write on a line before it goes out of the text box or even off the screen? I bet you didn't!!!!!\nYOU FOOL!";
+	auto begin = fulltext.begin();
+	auto end = fulltext.begin();
 
-	font.DrawText(text0, boxPos + boxBuffer, Colors::White, gfx);
-	font.DrawText(text1, boxPos + boxBuffer + lineOffSet, Colors::White, gfx);
-	font.DrawText(std::string(textLong.begin()+4, textLong.begin()+7), boxPos + boxBuffer + lineOffSet*2, Colors::White, gfx);
-
-	auto begin = textLong.begin();
-	auto end = textLong.begin();
-	int lineNum = 2;
-
-	//OK, there definitely has to be a cooler way to do this...
-
-	while (end != textLong.end())
+	while (end != fulltext.end())
 	{
 		int LineLengthMax = lineEndPos - boxPos.X - boxBuffer.X;
 		int LineLength = 0;
 
-		for (auto c = begin; c <= textLong.end(); ++c)
+		for (auto c = begin; c <= fulltext.end(); ++c)
 		{
-			if (c == textLong.end())
+			if (c == fulltext.end())
 			{
 				end = c;
 				break;
@@ -73,10 +57,9 @@ void TextBox::DrawTxt(Graphics& gfx) const
 			}
 		}
 
-		font.DrawText(std::string(begin, end), boxPos + boxBuffer + lineOffSet * lineNum - Vec<int>{0,300}, Colors::White, gfx);
+		line.push_back(std::string(begin, end));
 
-		lineNum++;
-		if (end != textLong.end())
+		if (end != fulltext.end())
 		{
 			begin = end + 1;
 			while (*begin == ' ' || *begin == '\n')
@@ -84,5 +67,25 @@ void TextBox::DrawTxt(Graphics& gfx) const
 				++begin;
 			}
 		}
+	}
+
+	return line;
+}
+
+void TextBox::DrawFrame(Graphics& gfx) const
+{
+	bev.DrawBevBorder(Box, boxBorderThickness, gfx);
+	gfx.DrawRect(Box, Colors::DarkGray);
+	gfx.DrawRect(Rect<int>(boxPos.X + boxBuffer.X, boxPos.Y + boxBuffer.Y, lineEndPos, boxPos.Y + boxSize.Y ), Colors::Green);
+}
+
+void TextBox::DrawTxt(Graphics& gfx) const
+{
+	std::string text = "The First Line of Text\nThe Next Line of Text\nDid you realize there is a limit to the amount of text you can write on a line before it goes out of the text box or even off the screen? I bet you didn't!!!!!\nYOU FOOL!";
+	std::vector<std::string> line = ProcessText(text);
+
+	for (int i = 0; i < 3; i++)
+	{
+		font.DrawText(line[i], boxPos + boxBuffer + lineOffSet * i, Colors::White, gfx);
 	}
 }
