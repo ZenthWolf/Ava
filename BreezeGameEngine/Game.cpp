@@ -32,12 +32,30 @@ void Game::Play()
 
 	int iter = 0;
 
+	float elapseTime = ft.Mark();
+
+	while (elapseTime > 0.0f)
+	{
+		float dt = std::min(0.0025f, elapseTime);
+		UpdateModel(dt);
+		elapseTime -= dt;
+		iter++;
+	}
+
+	ComposeFrame(iter);
+	gfx.EndFrame();
+}
+
+
+void Game::UpdateModel(float dt)
+{
 	switch (gameState)
 	{
 	case GameState::NewWave:
 	{
 		if (prepareWave)
 		{
+			std::cout << "did\n";
 			spawner.NewWave(wave);
 			prepareWave = false;
 
@@ -70,48 +88,32 @@ void Game::Play()
 
 			ava.Heal(wave % 2);
 			Vec<float> avapos = ava.GetPos();
-			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
+			ava.Move(Vec<float>{ 100.0f, 100.0f } -avapos);
 			ava.ChangeAct(Entity::Action::Move);
 
 			prepareWave = true;
 			gameState = GameState::NewWave;
 		}
 
-		float elapseTime = ft.Mark();
-
-		while (elapseTime > 0.0f)
+		avaController.ReadInput();
+		for (auto& bhv : behavior)
 		{
-			float dt = std::min(0.0025f, elapseTime);
-			UpdateModel(dt);
-			elapseTime -= dt;
-
-			iter++;
+			bhv->Update(dt);
 		}
+
+		for (auto& atk : room.attack)
+		{
+			atk->Update(dt);
+		}
+
+		room.Update(dt);
+
+		collider.StaticCollider(room);
+		collider.AttackCollider(room);
+
 		break;
 	}
 	}
-	ComposeFrame(iter);
-	gfx.EndFrame();
-}
-
-
-void Game::UpdateModel(float dt)
-{
-	avaController.ReadInput();
-	for (auto& bhv : behavior)
-	{
-		bhv->Update(dt);
-	}
-	
-	for (auto& atk : room.attack)
-	{
-		atk->Update(dt);
-	}
-
-	room.Update(dt);
-
-	collider.StaticCollider(room);
-	collider.AttackCollider(room);
 }
 
 void Game::Cull()
