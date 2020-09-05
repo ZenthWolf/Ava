@@ -75,6 +75,7 @@ private:
 	HUD Stats;
 	TextBox	textBox;
 
+	bool prepareWave = true;
 	int wave = 1;
 
 	Font font = "Images//Fixedsys16x28.bmp";

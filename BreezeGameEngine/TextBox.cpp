@@ -1,7 +1,5 @@
 #include "TextBox.h"
 
-
-
 TextBox::TextBox()
 {
 	Box = Rect<int>(boxPos, boxPos+boxSize);
@@ -15,9 +13,9 @@ void TextBox::Draw(Graphics& gfx) const
 	DrawTxt(gfx);
 }
 
-std::vector<std::string> TextBox::ProcessText(const std::string fulltext) const
+void TextBox::ProcessText(const std::string fulltext)
 {
-	std::vector<std::string> line;
+	finished = false;
 
 	auto begin = fulltext.begin();
 	auto end = fulltext.begin();
@@ -68,8 +66,6 @@ std::vector<std::string> TextBox::ProcessText(const std::string fulltext) const
 			}
 		}
 	}
-
-	return line;
 }
 
 void TextBox::DrawFrame(Graphics& gfx) const
@@ -81,11 +77,25 @@ void TextBox::DrawFrame(Graphics& gfx) const
 
 void TextBox::DrawTxt(Graphics& gfx) const
 {
-	std::string text = "The First Line of Text\nThe Next Line of Text\nDid you realize there is a limit to the amount of text you can write on a line before it goes out of the text box or even off the screen? I bet you didn't!!!!!\nYOU FOOL!";
-	std::vector<std::string> line = ProcessText(text);
-
-	for (int i = 0; i < 3; i++)
+	for (int i = curLine; i < min(curLine+3, line.size()); i++)
 	{
-		font.DrawText(line[i], boxPos + boxBuffer + lineOffSet * i, Colors::White, gfx);
+		font.DrawText(line[i], boxPos + boxBuffer + lineOffSet * (i-curLine), Colors::White, gfx);
 	}
+}
+
+void TextBox::NextLine()
+{
+	if (curLine + 2 < line.size())
+	{
+		curLine = min(curLine + 2,line.size() - 1);
+	}
+	else
+	{
+		finished = true;
+	}
+}
+
+bool TextBox::IsFinished() const
+{
+	return finished;
 }

@@ -36,9 +36,29 @@ void Game::Play()
 	{
 	case GameState::NewWave:
 	{
-		spawner.NewWave(wave);
+		if (prepareWave)
+		{
+			spawner.NewWave(wave);
+			prepareWave = false;
 
-		gameState = GameState::Play;
+			textBox.ProcessText("Wave " + std::to_string(1) + "\n\n FITE!");
+		}
+
+		if (!wnd.kbd.KeyIsEmpty())
+		{
+			auto e = wnd.kbd.ReadKey();
+
+			if (e.GetCode() == 'Z' && e.IsPress())
+			{
+				textBox.NextLine();
+			}
+		}
+
+		if (textBox.IsFinished())
+		{
+			gameState = GameState::Play;
+		}
+
 		break;
 	}
 	case GameState::Play:
@@ -52,6 +72,8 @@ void Game::Play()
 			Vec<float> avapos = ava.GetPos();
 			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
 			ava.ChangeAct(Entity::Action::Move);
+
+			prepareWave = true;
 			gameState = GameState::NewWave;
 		}
 
@@ -115,5 +137,8 @@ void Game::ComposeFrame(int iter)
 
 	Stats.Draw(wave, gfx);
 
-	textBox.Draw(gfx);
+	if (gameState == GameState::NewWave)
+	{
+		textBox.Draw(gfx);
+	}
 }
