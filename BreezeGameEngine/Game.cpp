@@ -32,51 +32,13 @@ void Game::Play()
 
 	int iter = 0;
 
-	float elapseTime = ft.Mark();
-
-	while (elapseTime > 0.0f)
-	{
-		float dt = std::min(0.0025f, elapseTime);
-		UpdateModel(dt);
-		elapseTime -= dt;
-		iter++;
-	}
-
-	ComposeFrame(iter);
-	gfx.EndFrame();
-}
-
-
-void Game::UpdateModel(float dt)
-{
 	switch (gameState)
 	{
 	case GameState::NewWave:
 	{
-		if (prepareWave)
-		{
-			std::cout << "did\n";
-			spawner.NewWave(wave);
-			prepareWave = false;
+		spawner.NewWave(wave);
 
-			textBox.ProcessText("Wave " + std::to_string(1) + "\n\n FITE!");
-		}
-
-		if (!wnd.kbd.KeyIsEmpty())
-		{
-			auto e = wnd.kbd.ReadKey();
-
-			if (e.GetCode() == 'Z' && e.IsPress())
-			{
-				textBox.NextLine();
-			}
-		}
-
-		if (textBox.IsFinished())
-		{
-			gameState = GameState::Play;
-		}
-
+		gameState = GameState::Play;
 		break;
 	}
 	case GameState::Play:
@@ -88,32 +50,46 @@ void Game::UpdateModel(float dt)
 
 			ava.Heal(wave % 2);
 			Vec<float> avapos = ava.GetPos();
-			ava.Move(Vec<float>{ 100.0f, 100.0f } -avapos);
+			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
 			ava.ChangeAct(Entity::Action::Move);
-
-			prepareWave = true;
 			gameState = GameState::NewWave;
 		}
 
-		avaController.ReadInput();
-		for (auto& bhv : behavior)
+		float elapseTime = ft.Mark();
+
+		while (elapseTime > 0.0f)
 		{
-			bhv->Update(dt);
+			float dt = std::min(0.0025f, elapseTime);
+			UpdateModel(dt);
+			elapseTime -= dt;
+
+			iter++;
 		}
-
-		for (auto& atk : room.attack)
-		{
-			atk->Update(dt);
-		}
-
-		room.Update(dt);
-
-		collider.StaticCollider(room);
-		collider.AttackCollider(room);
-
 		break;
 	}
 	}
+	ComposeFrame(iter);
+	gfx.EndFrame();
+}
+
+
+void Game::UpdateModel(float dt)
+{
+	avaController.ReadInput();
+	for (auto& bhv : behavior)
+	{
+		bhv->Update(dt);
+	}
+	
+	for (auto& atk : room.attack)
+	{
+		atk->Update(dt);
+	}
+
+	room.Update(dt);
+
+	collider.StaticCollider(room);
+	collider.AttackCollider(room);
 }
 
 void Game::Cull()
@@ -137,10 +113,5 @@ void Game::ComposeFrame(int iter)
 
 	room.Draw(gfx);
 
-	Stats.Draw(wave, gfx);
-
-	if (gameState == GameState::NewWave)
-	{
-		textBox.Draw(gfx);
-	}
+	Stats.Draw(wave, gfx); 
 }
