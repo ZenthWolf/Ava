@@ -302,18 +302,18 @@ void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
 	{
 		x0 = Screen.X0;
 	}
-	else if (x1 >= Screen.X1)
+	else if (x1 >= Screen.X1 - 1)
 	{
-		x1 = Screen.X1;
+		x1 = Screen.X1 - 1;
 	}
 
 	if (y0 < Screen.Y0)
 	{
 		y0 = Screen.Y0;
 	}
-	else if (y1 >= Screen.Y1)
+	else if (y1 >= Screen.Y1 - 1)
 	{
-		y1 = Screen.Y1;
+		y1 = Screen.Y1 - 1;
 	}
 
 

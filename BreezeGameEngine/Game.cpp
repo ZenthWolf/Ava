@@ -23,7 +23,7 @@ Game::Game(MainWindow& wnd)
 	avaController(ava, room.attack, wnd.kbd), spawner(room, behavior),
 	Stats(ava, room)
 {
-	
+
 }
 
 void Game::Play()
@@ -32,13 +32,51 @@ void Game::Play()
 
 	int iter = 0;
 
+	float elapseTime = ft.Mark();
+
+	while (elapseTime > 0.0f)
+	{
+		float dt = std::min(0.0025f, elapseTime);
+		UpdateModel(dt);
+		elapseTime -= dt;
+		iter++;
+	}
+
+	ComposeFrame(iter);
+	gfx.EndFrame();
+}
+
+
+void Game::UpdateModel(float dt)
+{
 	switch (gameState)
 	{
 	case GameState::NewWave:
 	{
-		spawner.NewWave(wave);
+		if (prepareWave)
+		{
+			std::cout << "did\n";
+			spawner.NewWave(wave);
+			prepareWave = false;
 
-		gameState = GameState::Play;
+			textBox.ProcessText("Wave " + std::to_string(1) + "\n\n FITE!");
+		}
+
+		if (!wnd.kbd.KeyIsEmpty())
+		{
+			auto e = wnd.kbd.ReadKey();
+
+			if (e.GetCode() == 'Z' && e.IsPress())
+			{
+				textBox.NextLine();
+			}
+		}
+
+		if (textBox.IsFinished())
+		{
+			gameState = GameState::Play;
+		}
+
 		break;
 	}
 	case GameState::Play:
@@ -50,46 +88,32 @@ void Game::Play()
 
 			ava.Heal(wave % 2);
 			Vec<float> avapos = ava.GetPos();
-			ava.Move(Vec<float>{ 100.0f, 100.0f } - avapos);
+			ava.Move(Vec<float>{ 100.0f, 100.0f } -avapos);
 			ava.ChangeAct(Entity::Action::Move);
+
+			prepareWave = true;
 			gameState = GameState::NewWave;
 		}
 
-		float elapseTime = ft.Mark();
-
-		while (elapseTime > 0.0f)
+		avaController.ReadInput();
+		for (auto& bhv : behavior)
 		{
-			float dt = std::min(0.0025f, elapseTime);
-			UpdateModel(dt);
-			elapseTime -= dt;
-
-			iter++;
+			bhv->Update(dt);
 		}
+
+		for (auto& atk : room.attack)
+		{
+			atk->Update(dt);
+		}
+
+		room.Update(dt);
+
+		collider.StaticCollider(room);
+		collider.AttackCollider(room);
+
 		break;
 	}
 	}
-	ComposeFrame(iter);
-	gfx.EndFrame();
-}
-
-
-void Game::UpdateModel(float dt)
-{
-	avaController.ReadInput();
-	for (auto& bhv : behavior)
-	{
-		bhv->Update(dt);
-	}
-	
-	for (auto& atk : room.attack)
-	{
-		atk->Update(dt);
-	}
-
-	room.Update(dt);
-
-	collider.StaticCollider(room);
-	collider.AttackCollider(room);
 }
 
 void Game::Cull()
@@ -100,18 +124,23 @@ void Game::Cull()
 			[](std::unique_ptr<Behavior>& i) {return i->Cull(); }
 		), behavior.end());
 	}
-	
+
 	room.Cull();
 }
 
 
 void Game::ComposeFrame(int iter)
 {
-	std::string text ="No. of Iterations: ";
+	std::string text = "No. of Iterations: ";
 	text += std::to_string(iter);
 	font.DrawText(text, { 20, 545 }, Color(255, 255, 255), gfx);
 
 	room.Draw(gfx);
 
-	Stats.Draw(wave, gfx); 
+	Stats.Draw(wave, gfx);
+
+	if (gameState == GameState::NewWave)
+	{
+		textBox.Draw(gfx);
+	}
 }
